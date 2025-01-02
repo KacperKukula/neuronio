@@ -1,9 +1,18 @@
-<script setup lang="ts">
-</script>
-
 <template>
-  <h1>Hello world</h1>
+
+  <nav>
+    <RouterLink to="/">Go to Home</RouterLink>
+    <RouterLink to="/login">Go to About</RouterLink>
+  </nav>
+
+  <main>
+    <RouterView />
+  </main>
 </template>
+
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router';
+</script>
 
 <style scoped>
 .logo {
