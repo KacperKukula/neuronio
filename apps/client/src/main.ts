@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import './style.scss'
 import App from './App.vue'
 
-import Home from './pages/Home.vue'
-import Login from './pages/Login.vue'
+import Home from '@/pages/Home/Home.vue'
+import Login from '@/pages/Login/Login.vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 
 const routes = [

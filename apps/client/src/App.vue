@@ -1,17 +1,14 @@
 <template>
+  <NavBar />
 
-  <nav>
-    <RouterLink to="/">Go to Home</RouterLink>
-    <RouterLink to="/login">Go to About</RouterLink>
-  </nav>
-
-  <main>
+  <main>    
     <RouterView />
   </main>
 </template>
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
+import NavBar from '@/layout/NavBar/NavBar.vue';
 </script>
 
 <style scoped>
