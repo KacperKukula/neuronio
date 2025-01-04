@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  padding: 0;
+  margin: 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: RadioGrotesk, 
     Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
