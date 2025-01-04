@@ -21,5 +21,8 @@
   "homepage": "https://github.com/KacperKukula/3rainD#readme",
   "bugs": {
     "url": "https://github.com/KacperKukula/3rainD/issues"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.2.0"
   }
 }
