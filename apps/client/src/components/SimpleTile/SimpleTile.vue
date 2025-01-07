@@ -13,9 +13,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use "@/variables" as vars;
+@use "sass:color";
+
 .simpleTile {
-    background-color: #a0a0a0;
-    padding: 1em;
+    padding: 2.2rem 1.8rem 2.6rem;
     border-radius: 0.5em;
+    background-color: vars.$primaryDark;
+    border: 1.8px solid color.adjust(vars.$primaryDark, $lightness: 8%);
 }
 </style>

@@ -4,13 +4,13 @@
             <div class="logo">Logo</div>
         </router-link>
         <router-link to="/login">Login</router-link>
+        <router-link to="/dashboard">Dashboard</router-link>
 
         <Profile />
     </nav>
 </template>
 
 <script setup lang="ts">
-// import { RouterLink } from 'vue-router';
 import Profile from './Profile.vue';
 </script>
 

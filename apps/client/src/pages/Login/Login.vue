@@ -1,11 +1,14 @@
 <template>
-    <section id="login">
+    <section id="login" class="login">
         <SimpleTile>
-            <h1>Login</h1>
-            <input type="text" v-model="email" placeholder="Email">
-            <input type="password" v-model="password" placeholder="Password">
+            <div class="login__form">
+                <h1>Login</h1>
 
-            <button @click="loginUser">Login</button>
+                <simple-input type="text" v-model="email" placeholder="Email" />
+                <simple-input type="password" v-model="password" placeholder="Password" />
+    
+                <button @click="loginUser">Login</button>
+            </div>
         </SimpleTile>
     </section>
 </template>
@@ -13,17 +16,19 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
-import { service as firebaseService } from '@/modules/firebase/firebase';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'Login',
     components: {
-        SimpleTile
+        SimpleTile, SimpleInput
     },
     setup() {
-        const auth = getAuth(firebaseService);
-
+        const router = useRouter();
+                
         const email = ref<string>('');
         const password = ref<string>('');
         const errorMessage = ref<string | null>(null);
@@ -31,9 +36,11 @@ export default defineComponent({
         const loginUser = async () => {
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+                const userCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
                 const user = userCredential.user;
-                console.log('User logged in:', user);
+
+                router.push('/');
+
             } catch (error) {
                 console.error('Error logging in:', error);
             }
@@ -49,11 +56,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-#login {
+
+.login {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100svh;
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
 
     input {
         padding: 0.5em;
