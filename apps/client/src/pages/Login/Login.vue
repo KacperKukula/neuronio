@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts">
+import "reflect-metadata";
 import { defineComponent, ref } from 'vue';
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
@@ -22,6 +23,7 @@ import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
 import { useRouter } from 'vue-router';
 import { UserDto } from '@/stores/userStore/dtos/UserDto';
 import { plainToInstance } from 'class-transformer';
+import { useUserStore } from '@/stores/userStore/UserStore';
 
 export default defineComponent({
     name: 'Login',
@@ -29,6 +31,7 @@ export default defineComponent({
         SimpleTile, SimpleInput
     },
     setup() {
+        const userStore = useUserStore();
         const router = useRouter();
                 
         const email = ref<string>('');
@@ -39,11 +42,10 @@ export default defineComponent({
 
             try {
                 const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
-
-                const newUser = plainToInstance(UserDto, userCredential.user);
-
+                const user = plainToInstance(UserDto, userCredential.user, { excludeExtraneousValues: true });
                 
-                
+                userStore.login(user);
+
                 router.push('/');
 
             } catch (error) {

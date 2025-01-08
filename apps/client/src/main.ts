@@ -7,6 +7,10 @@ import App from './App.vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { firebaseAuth } from '@/modules/firebase/firebaseAuth'
 import { routes } from './router/routes'
+import { createPinia } from "pinia";
+import { useUserStore } from "./stores/userStore/UserStore";
+
+const pinia = createPinia()
 
 const router = createRouter({
     history: createMemoryHistory(),
@@ -21,5 +25,6 @@ const router = createRouter({
 // });
 
 createApp(App)
+    .use(pinia)
     .use(router)
     .mount('#app')

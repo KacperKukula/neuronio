@@ -1,22 +1,31 @@
 import { defineStore } from 'pinia'
+import { User } from './model/User'
+import type { UserDto } from './dtos/UserDto'
+import { plainToInstance } from 'class-transformer'
 
 const USERSTORE_NAME = 'userStore'
 
 export const useUserStore = defineStore(USERSTORE_NAME, {
     state: () => ({
-        user: null as any,
+        user: null,
     }),
     actions: {
-        setUser(user: any) {
-            this.user = user
+        login(user: UserDto) {
+            this.clearUser();
+            this.user = plainToInstance(User, user);
+
+            console.log(this.user)
         },
-        logout() {
-            this.user = null
+        clearUser() {
+            this.user = null;
         },
     },
     getters: {
         isLoggedIn(): boolean {
             return !!this.user
         },
+        getUser(): boolean {
+            return this.user
+        }
     },
 })
