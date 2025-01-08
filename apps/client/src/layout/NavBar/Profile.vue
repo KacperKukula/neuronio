@@ -5,6 +5,10 @@
             <button @click="loginUser">Login</button>
         </template>
 
+        <template v-else>
+            <button @click="logoutUser">Logout</button>
+        </template>
+
         <UserCircleIcon />
     </div>
 </template>
@@ -18,10 +22,14 @@ const router = useRouter()
 
 const isLoggedIn: boolean = !!firebaseAuth.currentUser;
 
-console.log(isLoggedIn, firebaseAuth.currentUser);
 const loginUser = async () => {
     router.push('/login')
 };
+
+const logoutUser = async () => {
+    await firebaseAuth.signOut();
+    router.push('/login')
+}
 
 </script>
 
