@@ -17,9 +17,11 @@
 import { defineComponent, ref } from 'vue';
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, type UserCredential } from "firebase/auth";
 import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
 import { useRouter } from 'vue-router';
+import { UserDto } from '@/stores/userStore/dtos/UserDto';
+import { plainToInstance } from 'class-transformer';
 
 export default defineComponent({
     name: 'Login',
@@ -36,9 +38,12 @@ export default defineComponent({
         const loginUser = async () => {
 
             try {
-                const userCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
-                const user = userCredential.user;
+                const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
 
+                const newUser = plainToInstance(UserDto, userCredential.user);
+
+                
+                
                 router.push('/');
 
             } catch (error) {

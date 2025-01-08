@@ -23,6 +23,8 @@
     "url": "https://github.com/KacperKukula/3rainD/issues"
   },
   "dependencies": {
-    "@heroicons/vue": "^2.2.0"
+    "@heroicons/vue": "^2.2.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1"
   }
 }

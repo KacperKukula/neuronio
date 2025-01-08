@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { createApp } from 'vue'
 import './style.scss'
 import App from './App.vue'
@@ -11,12 +13,12 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach(() => {
+// router.beforeEach(() => {
 
-  import('@/modules/firebase/firebaseAuth')
+//   import('@/modules/firebase/firebaseAuth')
 
-  console.log(firebaseAuth.currentUser)
-});
+//   console.log(firebaseAuth.currentUser)
+// });
 
 createApp(App)
     .use(router)
