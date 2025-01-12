@@ -24,7 +24,7 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
         isLoggedIn(): boolean {
             return !!this.user
         },
-        getUser(): boolean {
+        getUser(): User | null {
             return this.user
         }
     },
