@@ -1,32 +1,26 @@
 <template>
-    <div>
-        😒 Nothing here? Ugh
+    <div class="dashboard">
+        😒 Nothing here? Ugh - dashboard
 
-        <button @click="fetchData">{{ apiText }}</button>
+        <Button label="Warn" severity="warn" rounded />
     </div>
 </template>
 
-<script setup lang="ts">
-import { HttpService } from '@/modules/httpService/httpService';
-import { ref } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Button from 'primevue/button';
 
-const apiText = ref('Click me to fetch data');
-
-const fetchData = async () => {
-    apiText.value = 'Loading...';
-    const response: Response = HttpService.authorizedReq().get('');
-};
-
+export default defineComponent({
+    name: 'Dashboard',
+    components: {
+        Button,
+    },
+});
 </script>
 
-<style lang="scss" scoped>
-div {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
-    height: 100vh;
-    font-size: 2rem;
+<style scoped style="scss">
+.dashboard {
+    margin-top: 5rem;
+    height: 4rem;
 }
 </style>

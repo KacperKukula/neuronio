@@ -15,7 +15,9 @@
   "keywords": [],
   "author": "Kacper Kukuła",
   "devDependencies": {
-    "turbo": "^2.3.3"
+    "@types/three": "^0.172.0",
+    "turbo": "^2.3.3",
+    "unplugin-vue-components": "^28.4.1"
   },
   "packageManager": "npm@11.0.0",
   "homepage": "https://github.com/KacperKukula/3rainD#readme",
