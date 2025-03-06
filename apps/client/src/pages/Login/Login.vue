@@ -7,7 +7,11 @@
                 <simple-input type="text" v-model="email" placeholder="Email" />
                 <simple-input type="password" v-model="password" placeholder="Password" />
     
-                <button @click="loginUser">Login</button>
+                <!-- <button @click="loginUser">Login</button> -->
+
+                <simple-input type="submit" @click="loginUser" value="Login" />
+
+                <simple-button>Hello world</simple-button>
             </div>
         </SimpleTile>
     </section>
@@ -16,8 +20,6 @@
 <script lang="ts">
 import "reflect-metadata";
 import { defineComponent, ref } from 'vue';
-import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
-import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
 import { signInWithEmailAndPassword, type UserCredential } from "firebase/auth";
 import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
 import { useRouter } from 'vue-router';
@@ -25,10 +27,14 @@ import { UserDto } from '@/stores/userStore/dtos/UserDto';
 import { plainToInstance } from 'class-transformer';
 import { useUserStore } from '@/stores/userStore/UserStore';
 
+import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
+import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
+import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
+
 export default defineComponent({
     name: 'Login',
     components: {
-        SimpleTile, SimpleInput
+        SimpleTile, SimpleInput, SimpleButton
     },
     setup() {
         const userStore = useUserStore();

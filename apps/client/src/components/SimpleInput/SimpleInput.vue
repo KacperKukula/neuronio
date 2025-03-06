@@ -41,15 +41,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use "@/variables" as vars;
-
-.simpleInput {
-    box-sizing: border-box;
-
-    width: 100%;
-    padding: 0.5em;
-    border: 1.6px solid green;
-    border-radius: 0.5em;
-    border: none;
-}
+@use "./SimpleInput.scss" as *;
 </style>

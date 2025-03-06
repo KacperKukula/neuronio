@@ -1,0 +1,10 @@
+@mixin outlinedButtonStyles() {
+    border: 1px solid $primary;
+    color: $primary;
+    background-color: transparent;
+
+    &:hover {
+        background-color: $primary;
+        color: $white;
+    }
+}

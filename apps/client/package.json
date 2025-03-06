@@ -9,16 +9,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
+    "@primeuix/themes": "^1.0.0",
+    "@splinetool/loader": "^1.9.59",
+    "@splinetool/runtime": "^1.9.59",
     "firebase": "^11.1.0",
     "pinia": "^2.3.0",
+    "primevue": "^4.3.1",
     "sass": "^1.83.0",
+    "three": "^0.172.0",
     "vue": "^3.5.13",
     "vue-router": "4"
   },
   "devDependencies": {
+    "@primevue/auto-import-resolver": "^4.3.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
     "typescript": "~5.6.2",
+    "unplugin-vue-components": "^28.4.1",
     "vite": "^6.0.5",
     "vite-plugin-vue-devtools": "^7.7.0",
     "vue-tsc": "^2.2.0"
