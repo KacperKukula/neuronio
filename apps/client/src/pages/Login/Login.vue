@@ -11,7 +11,8 @@
 
                 <simple-input type="submit" @click="loginUser" value="Login" />
 
-                <simple-button>Hello world</simple-button>
+                <!--TODO: -->
+                <!--<simple-button>Hello world</simple-button>-->
             </div>
         </SimpleTile>
     </section>

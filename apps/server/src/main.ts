@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { FirebaseAuthGuard } from './mods/firebase-admin/FirebaseAuthGuard';
+import { FirebaseAuthGuard } from './modules/firebase-admin/FirebaseAuthGuard';
 
 async function bootstrap() {  
   const app = await NestFactory.create(AppModule);
