@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+            "baseUrl": ".",
+            "paths": {
+            "@shared/*": ["packages/neuronio-shared/src/*"]
+        }
+    },
+    "include": ["packages/**/*", "apps/**/*"]
+}

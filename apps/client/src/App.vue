@@ -11,7 +11,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import NavBar from '@/layout/NavBar/NavBar.vue';
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -23,5 +23,9 @@ import NavBar from '@/layout/NavBar/NavBar.vue';
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+main {
+  padding-top: calc($navBarHeight + .3rem);
 }
 </style>
