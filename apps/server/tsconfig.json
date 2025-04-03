@@ -20,7 +20,8 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@shared/*": ["packages/neuronio-shared/src/*"]
     },
   },
   "include": ["src/**/*.ts"],

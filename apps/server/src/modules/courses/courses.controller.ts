@@ -1,6 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CoursesService } from './courses.service';
-import { Couses } from '@/entities/courses/courses.entity';
+import { Courses } from '@/entities/courses/courses.entity';
+import { CreateCourseDto } from 'shared';
 
 @Controller('courses')
 export class CoursesController {
@@ -9,5 +10,10 @@ export class CoursesController {
     @Get()
     getCourses(): string {
         return 'Hello from courses';
+    }
+
+    @Post('create')
+    createCourses(@Body() course: CreateCourseDto): Promise<Courses> {
+        return this.coursesService.createCourses(course);
     }
 }

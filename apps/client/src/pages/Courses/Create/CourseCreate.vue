@@ -4,8 +4,8 @@
         
         <Form v-slot="$form" :initialValues="{}" @submit="onFormSubmit" class="createCourse__form">
             <div class="flex flex-col gap-1">
-                <InputText type="text" placeholder="Name" fluid />
-                <Editor v-model="value" editorStyle="height: 320px" />
+                <InputText v-model="formData.name" type="text" placeholder="Name" fluid />
+                <Editor v-model="formData.description" editorStyle="height: 320px" />
                 <Message v-if="$form.username?.invalid" severity="error" size="small" variant="simple">{{ $form.username.error?.message }}</Message>
             </div>
             <Button type="submit" severity="secondary" label="Submit" />
@@ -14,23 +14,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { courseApi } from '@/api/courseApi';
 import { CreateCourseDto } from 'shared';
 
 export default defineComponent({
     setup() {
+        const formData = ref({});
         
-        const onFormSubmit = async (values: CreateCourseDto) => {
+        const onFormSubmit = async () => {
             try {
-                await courseApi.createCourse(values);
+                console.log(formData);
+
+                formData.value.code = 'dupa';
+                await courseApi.createCourse(formData.value);
             } catch (error) {
                 console.error(error);
             }
         }
 
         return {
-            onFormSubmit
+            onFormSubmit,
+            formData,
         }
     }
 })

@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from '@/entities/user/user.entity';
 
 @Entity({ schema: 'courses' })
-export class Couses {
+export class Courses {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -15,7 +15,7 @@ export class Couses {
     @Column({ nullable: false })
     description: string;
 
-    @Column({ nullable: false })
-    @ManyToOne(() => User, user => user.id)
-    owner: number;
+    // @Column({ nullable: false })
+    // @ManyToOne(() => User, user => user.id)
+    // owner: number;
 }

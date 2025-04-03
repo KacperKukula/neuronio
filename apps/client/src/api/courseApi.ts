@@ -8,7 +8,7 @@ export class courseApi extends beApiClient {
     //     return ky.post( this.apiUrl + 'courses', { json: course }).json();
     // }
     static async createCourse(course: CreateCourseDto): Promise<string> {
-        return await ky.post(this.apiUrl + 'courses', { json: course });
+        return await ky.post(this.apiUrl + 'courses/create', { json: course });
     }
 
     static async getCourses(): Promise<string> {
