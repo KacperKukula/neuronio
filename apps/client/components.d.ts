@@ -9,7 +9,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    Editor: typeof import('primevue/editor')['default']
+    Form: typeof import('@primevue/forms/form')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
+    Message: typeof import('primevue/message')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']

@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './conf/typeorm.config';
 import { UserModule } from './modules/user/user.module';
+import { CoursesModule } from './modules/courses/courses.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './modules/user/user.module';
 
     /* Functional modules */
     UserModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,6 +5,7 @@
         </router-link>
         <router-link to="/login">Login</router-link>
         <router-link to="/dashboard">Dashboard</router-link>
+        <router-link to="/courses/create">Courses</router-link>
 
         <Profile />
     </nav>
@@ -25,6 +26,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 1em .25rem;
+    height: $navBarHeight;
 
     .logo {
         aspect-ratio: 1/1;

@@ -11,13 +11,16 @@
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
     "@primeuix/themes": "^1.0.0",
+    "@primevue/forms": "^4.3.2",
     "@splinetool/loader": "^1.9.59",
     "@splinetool/runtime": "^1.9.59",
     "firebase": "^11.1.0",
     "ky": "^1.7.4",
     "pinia": "^2.3.0",
     "primevue": "^4.3.1",
+    "quill": "^2.0.3",
     "sass": "^1.83.0",
+    "shared": "^1.0.0",
     "three": "^0.172.0",
     "vue": "^3.5.13",
     "vue-router": "4"
