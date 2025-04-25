@@ -1,9 +1,8 @@
 <template>
     <nav>
-        <router-link to="/">
-            <div class="logo">Logo</div>
-        </router-link>
-        <router-link to="/login">Login</router-link>
+        <router-link to="/" class="wraperLogo"><Logo /></router-link>
+
+        <router-link to="/register">Register</router-link>
         <router-link to="/dashboard">Dashboard</router-link>
         <router-link to="/courses/create">Courses</router-link>
 
@@ -13,6 +12,7 @@
 
 <script setup lang="ts">
 import Profile from './Profile.vue';
+import Logo from './Logo.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -25,15 +25,10 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1em .25rem;
     height: $navBarHeight;
 
-    .logo {
-        aspect-ratio: 1/1;
-        border-radius: 6rem;
-        border: 2px solid #42b883;
-        will-change: filter;
-        transition: filter 300ms;
+    .wraperLogo {
+        height: 100%;
     }
 }
 </style>

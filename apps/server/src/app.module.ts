@@ -1,12 +1,14 @@
 import { MiddlewareConsumer, Module, NestModule, Req, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './conf/typeorm.config';
 import { UserModule } from './modules/user/user.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from '@modules/auth/auth.module';
+import { AuthGuard } from '@/modules/auth/auth.guard';
 
 @Module({
   imports: [
@@ -23,8 +25,14 @@ import { CoursesModule } from './modules/courses/courses.module';
     /* Functional modules */
     UserModule,
     CoursesModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+  
+    // Global auth guard
+    { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule {}

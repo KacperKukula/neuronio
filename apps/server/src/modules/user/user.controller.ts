@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '@/entities/user/user.entity';
+import { AuthGuard } from '@/modules/auth/auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -24,5 +25,12 @@ export class UserController {
     @Delete(':id')
     remove(@Param('id') id: number): Promise<void> {
         return this.userService.remove(id);
+    }
+
+    @Post('getCurrentUser')
+    getUserByToken(@Request() req: Request): Promise<User> {
+        //@ts-ignore
+        const { password, ...user } =  this.userService.findOne(req.user.userId)
+        return user;
     }
 }

@@ -1,0 +1,3 @@
+[?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run build[?25l
+> shared@1.0.0 build
+> tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe [K[?9001l[?1004l

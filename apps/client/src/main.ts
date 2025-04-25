@@ -4,8 +4,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 /* ROUTER */
-import { createMemoryHistory, createRouter } from 'vue-router'
-import { firebaseAuth } from '@/modules/firebase/firebaseAuth'
+import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './router/routes'
 
 /* STORES */
@@ -23,7 +22,7 @@ import './style.scss'
 
 const pinia = createPinia()
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 })
 

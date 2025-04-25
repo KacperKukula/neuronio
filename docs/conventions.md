@@ -13,3 +13,7 @@ import { API_URL } from './config';
 // 3. Pliki stylów
 import './App.css';
 ```
+
+Data minimalization
+
+https://dev.to/gentax/nestjs-right-settings-for-debugging-kl0

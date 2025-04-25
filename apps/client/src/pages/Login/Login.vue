@@ -4,8 +4,8 @@
             <div class="login__form">
                 <h1>Login</h1>
 
-                <simple-input type="text" v-model="email" placeholder="Email" />
-                <simple-input type="password" v-model="password" placeholder="Password" />
+                <simple-input type="text" v-model="loginForm.name" placeholder="Username" />
+                <simple-input type="password" v-model="loginForm.password" placeholder="Password" />
     
                 <!-- <button @click="loginUser">Login</button> -->
 
@@ -13,6 +13,8 @@
 
                 <!--TODO: -->
                 <!--<simple-button>Hello world</simple-button>-->
+
+                <router-link to="/register">Register now</router-link>
             </div>
         </SimpleTile>
     </section>
@@ -21,12 +23,15 @@
 <script lang="ts">
 import "reflect-metadata";
 import { defineComponent, ref } from 'vue';
-import { signInWithEmailAndPassword, type UserCredential } from "firebase/auth";
-import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
-import { useRouter } from 'vue-router';
-import { UserDto } from '@/stores/userStore/dtos/UserDto';
-import { plainToInstance } from 'class-transformer';
+import { RouterLink, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore/UserStore';
+
+import { authService } from "@/services/authService";
+import { LoginDto } from "shared";
+import { validate } from "class-validator";
+import { plainToInstance } from "class-transformer";
+import { sessionManager } from "@/modules/session/SessionManager";
+import { userService } from "@/services/userService";
 
 import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
@@ -35,34 +40,36 @@ import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
 export default defineComponent({
     name: 'Login',
     components: {
-        SimpleTile, SimpleInput, SimpleButton
+        RouterLink, SimpleTile, SimpleInput, SimpleButton
     },
     setup() {
         const userStore = useUserStore();
         const router = useRouter();
-                
-        const email = ref<string>('');
-        const password = ref<string>('');
-        const errorMessage = ref<string | null>(null);
+
+        const loginForm = ref(new LoginDto())
 
         const loginUser = async () => {
+            const loginDto = plainToInstance(LoginDto, loginForm.value);
+            const errors = await validate(loginDto);
+            if(errors.length)
+                return console.error('Credentials not valid');
 
             try {
-                const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
-                const user = plainToInstance(UserDto, userCredential.user, { excludeExtraneousValues: true });
-                
-                userStore.login(user);
+                const { user, access_token } = await authService.login(loginDto)
+                sessionManager.setAccessToken(access_token)
+                userStore.login(user)
 
-                router.push('/');
-
+                userService.getCurrentUser()
             } catch (error) {
                 console.error('Error logging in:', error);
             }
         };
 
         return {
-            email,
-            password,
+            // User
+            loginForm,
+
+            // Actions
             loginUser,
         }
     }

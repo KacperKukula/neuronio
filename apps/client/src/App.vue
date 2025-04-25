@@ -9,6 +9,16 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import NavBar from '@/layout/NavBar/NavBar.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from './stores/userStore/UserStore';
+
+const userStore = useUserStore()
+
+onMounted(async () => {
+  await userStore.loadUser()
+  
+  console.log(userStore.user)
+})
 </script>
 
 <style lang="scss" scoped>
