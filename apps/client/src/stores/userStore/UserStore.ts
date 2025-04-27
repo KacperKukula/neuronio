@@ -31,9 +31,16 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
         },
     },
     getters: {
-        isLoggedIn(): boolean {
-            return !!this.user
-        },
+        /**
+         * Main endpoint to check if the user is logged in or not.
+         * @returns 
+         */
+        isLoggedIn(): boolean { return !!this.user },
+
+        /**
+         * Returns the user object if logged in, otherwise null.
+         * @returns User | null
+         */
         getUser(): User | null {
             return this.user
         }

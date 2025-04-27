@@ -54,16 +54,13 @@ export default defineComponent({
             if(errors.length)
                 return console.error('Credentials not valid');
 
-            try {
-                const { user, access_token } = await authService.login(loginDto)
-                sessionManager.setAccessToken(access_token)
-                userStore.login(user)
-
-                userService.getCurrentUser()
-            } catch (error) {
-                console.error('Error logging in:', error);
-            }
+            // try {
+            //     await login();
+            //     router.push('/dashboard');
+            // } catch (e) { console.error(e); }
         };
+
+        console.log(catchError)
 
         return {
             // User

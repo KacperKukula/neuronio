@@ -2,14 +2,20 @@ import Dashboard from '@/pages/Dashboard/Dashboard.vue'
 import CourseCreate from '@/pages/Courses/Create/CourseCreate.vue'
 import Register from '@/pages/Register/Register.vue'
 import Login from '@/pages/Login/Login.vue'
+import { requireAuth } from '@/router/guards';
+
+import PATH_CONST from './CommonPathsConst';
 
 export const routes = [
     { path: '/', component: Dashboard },
-    { path: '/login', component: Login },
-    { path: '/register', component: Register },
+    { path: PATH_CONST.LOGIN, component: Login },
+    { path: PATH_CONST.REGISTER, component: Register },
+
+    // Required Auth
     {
         path: '/courses',
         component: CourseCreate,
+        beforeEnter: requireAuth,
         children: [
             {
                 path: 'create',
@@ -18,8 +24,9 @@ export const routes = [
         ]
     },
     {
-        path: '/dashboard', 
+        path: '/dashboard',
+        requiredAuth: true,
         component: () => import('@/pages/Dashboard/Dashboard.vue'),
-        // beforeEnter: logedInGuard
+        beforeEnter: requireAuth,
     },
 ]

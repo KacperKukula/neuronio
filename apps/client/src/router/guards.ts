@@ -1,8 +1,7 @@
-import { firebaseAuth } from "@/modules/firebase/firebaseAuth"
+import COMMON_PATH_CONST from './CommonPathsConst';
+import { sessionManager } from "@modules/session/SessionManager";
 
-export const logedInGuard = () => {
-    console.log(!firebaseAuth.currentUser)
+export function requireAuth( to, from, next) {
 
-    if ( !firebaseAuth.currentUser )
-        return '/login'
+    sessionManager.getAccessToken() ? next() : next({ path: COMMON_PATH_CONST.LOGIN });       
 }

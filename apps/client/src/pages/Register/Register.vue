@@ -89,6 +89,8 @@ export default defineComponent({
                 console.log(resp)
 
                 // if(!errors.length) router.push('/login');
+
+                router.push('/login');
                 
             } catch (error) {
                 console.error('Error logging in:', error);

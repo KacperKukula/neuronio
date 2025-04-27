@@ -13,7 +13,8 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@modules/*": ["modules/*"],
     },
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
