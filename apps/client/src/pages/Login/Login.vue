@@ -1,5 +1,9 @@
 <template>
     <section id="login" class="login">
+        <div class="login--background">
+            <img src="/imgs/green-abstract.jpg"/>
+        </div>
+
         <SimpleTile>
             <div class="login__form">
                 <h1>Login</h1>
@@ -91,6 +95,19 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     height: 100svh;
+
+    &--background {
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        filter: brightness(.8);
+
+        > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
 
     &__form {
         display: flex;

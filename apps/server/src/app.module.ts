@@ -32,7 +32,7 @@ import { AuthGuard } from '@/modules/auth/auth.guard';
     AppService,
   
     // Global auth guard
-    { provide: APP_GUARD, useClass: AuthGuard },
+    // { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })
 export class AppModule {}

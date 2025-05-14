@@ -32,4 +32,11 @@ export class UserService {
     async remove(id: number): Promise<void> {
         await this.userRepository.delete(id);
     }
+
+    searchForUsers(searchPhrase: string): Promise<User[]> {
+        return this.userRepository.createQueryBuilder('user')
+            .where('user.name LIKE :searchPhrase', { searchPhrase: `%${searchPhrase}%` })
+            .orWhere('user.email LIKE :searchPhrase', { searchPhrase: `%${searchPhrase}%` })
+            .getMany();
+    }
 }

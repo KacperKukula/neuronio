@@ -33,4 +33,9 @@ export class UserController {
         const { password, ...user } =  this.userService.findOne(req.user.userId)
         return user;
     }
+
+    @Post('searchForUsers')
+    searchForUsers(@Body('search') search: string): Promise<User[]> {
+        return this.userService.searchForUsers(search);
+    }
 }

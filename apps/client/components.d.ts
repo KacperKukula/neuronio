@@ -13,7 +13,6 @@ declare module 'vue' {
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
     InputText: typeof import('primevue/inputtext')['default']
-    Listbox: typeof import('primevue/listbox')['default']
     Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

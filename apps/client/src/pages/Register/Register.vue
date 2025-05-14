@@ -1,18 +1,13 @@
 <template>
     <section id="register" class="register">
-        <SimpleTile>
-            <!-- <div class="register__form">
-                <h1>Register</h1>
+        <div class="register--background">
+            <img src="/imgs/green-abstract.jpg"/>
+        </div>
 
-                <simple-input type="text" v-model="registerForm.name" placeholder="Display name" />
-                <simple-input type="text" v-model="registerForm.email" placeholder="Email" />
-                <simple-input type="password" v-model="registerForm.firstPsswdTry" placeholder="Password" />
-                <simple-input type="password" v-model="registerForm.secondPsswdTry" placeholder="Password" />
+        <SimpleTile class="register__form">
+            <h1>Register</h1>
 
-                <simple-input type="submit" @click="register" value="Login" />
-            </div> -->
-            
-            <Form v-slot="$form" :validateOnBlur="true" @submit="register">
+            <Form v-slot="$form" :validateOnBlur="true" @submit="register" class="flex flex-col gap-4 w-60">
                 <FormField v-slot="$field" name="username">
                     <InputText v-model="registerForm.name" name="username" type="text" placeholder="Username" fluid />
                     <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
@@ -113,7 +108,21 @@ export default defineComponent({
     align-items: center;
     height: 100svh;
 
+    &--background {
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        filter: brightness(.8);
+
+        > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
     &__form {
+        padding: 3rem 2rem;
         display: flex;
         flex-direction: column;
         gap: 1em;
