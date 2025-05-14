@@ -14,6 +14,8 @@
                 <!--TODO: -->
                 <!--<simple-button>Hello world</simple-button>-->
 
+                <Message v-if="serverErr" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
+
                 <router-link to="/register">Register now</router-link>
             </div>
         </SimpleTile>
@@ -26,7 +28,7 @@ import { defineComponent, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore/UserStore';
 
-import { authService } from "@/services/authService";
+import { AuthService } from "@/services/AuthService";
 import { LoginDto } from "shared";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
@@ -36,6 +38,8 @@ import { userService } from "@/services/userService";
 import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
+import { Utils } from "@/lib";
+import { AuthModule } from "@/modules/auth/authModule";
 
 export default defineComponent({
     name: 'Login',
@@ -47,20 +51,25 @@ export default defineComponent({
         const router = useRouter();
 
         const loginForm = ref(new LoginDto())
+        const serverErr = ref<Error>()
 
         const loginUser = async () => {
             const loginDto = plainToInstance(LoginDto, loginForm.value);
-            const errors = await validate(loginDto);
-            if(errors.length)
+            const valErrors = await validate(loginDto);
+            if(valErrors.length)
                 return console.error('Credentials not valid');
 
             // try {
             //     await login();
             //     router.push('/dashboard');
             // } catch (e) { console.error(e); }
-        };
 
-        console.log(catchError)
+            const [error, data] = await Utils.catchError( AuthModule.getInstance().login(loginDto) )
+
+            serverErr.value = error;
+
+            router.push('/dashboard');
+        };
 
         return {
             // User
@@ -68,6 +77,8 @@ export default defineComponent({
 
             // Actions
             loginUser,
+
+            serverErr
         }
     }
 })

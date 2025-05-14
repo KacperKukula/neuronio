@@ -56,7 +56,7 @@ import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
 import { RegisterDto } from "shared";
 import { validate } from "class-validator";
-import { authService } from "@/services/authService";
+import { AuthService } from "@/services/AuthService";
 
 export default defineComponent({
     name: 'Login',
@@ -85,7 +85,7 @@ export default defineComponent({
                 // const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
                 // const user = plainToInstance(UserDto, userCredential.user, { excludeExtraneousValues: true });
                 
-                const resp = await authService.register(registerDto)
+                const resp = await AuthService.register(registerDto)
                 console.log(resp)
 
                 // if(!errors.length) router.push('/login');

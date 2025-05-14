@@ -1,34 +1,27 @@
 import { useUserStore } from "@/stores/userStore/UserStore";
 import { sessionManager } from "@/modules/session/SessionManager";
 import { SingletonModule } from "../abstract/SingletonModule";
-import { authService } from "@/services/authService";
+import { AuthService } from "@/services/AuthService";
 import type { LoginDto } from "shared";
 import { userService } from "@/services/userService";
 
-class AuthModule extends SingletonModule {
+export class AuthModule extends SingletonModule {
 
     constructor() { super() }
 
-    userStore = useUserStore()
+    userStore = useUserStore();
 
     signOut() {
         this.userStore.clearUser()
         sessionManager.clearAccessToken()    
     }
 
-    login(loginDto: LoginDto) {
+    async login(loginDto: LoginDto) {
 
-        try {
-            const { user, access_token } = await authService.login(loginDto)
-            sessionManager.setAccessToken(access_token)
-            this.userStore.login(user)
+        const { user, access_token } = await AuthService.login(loginDto)
+        sessionManager.setAccessToken(access_token)
+        this.userStore.login(user)
 
-            userService.getCurrentUser()
-
-        } catch (error) {
-            console.error('Error logging in:', error);
-        }
+        userService.getCurrentUser()
     };
 }
-
-export const authModule = new AuthModule();

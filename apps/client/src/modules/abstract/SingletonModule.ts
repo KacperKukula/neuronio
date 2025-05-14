@@ -8,8 +8,8 @@ export abstract class SingletonModule {
         SingletonModule.instance = this;
     }
 
-    // static getInstance<T extends SingletonModule>(this: new () => T): T {
-    //     !this.instance && this.instance = new this();
-    //     return this.instance as T;
-    // }
+    static getInstance<T extends SingletonModule>(this: new () => T): T {
+        !SingletonModule.instance && (SingletonModule.instance = new this());
+        return SingletonModule.instance as T;
+    }
 }

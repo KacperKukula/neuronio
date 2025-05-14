@@ -22,4 +22,8 @@ export class CoursesService {
         const course = plainToClass(Courses, courseDto);
         return await this.coursesRepository.save(course);
     }
+
+    async getCoursesList(userId: number) {
+        return this.coursesRepository.find({  })
+    }
 }
