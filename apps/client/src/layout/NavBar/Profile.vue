@@ -3,27 +3,31 @@
 
         <div class="profile__background"></div>
 
-        <router-link to="/login"class="profile__login">Login</router-link>
-
-        <!-- <template v-if="!isLoggedIn">
-            <button @click="loginUser">Login</button>
+        <template v-if="!userStore.isLoggedIn">
+            <router-link to="/login" class="profile__login" @click="loginUser">Login</router-link>
         </template>
 
         <template v-else>
-            <button @click="logoutUser">Logout</button>
-        </template> -->
+            <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="flagMenuShow"></Menu>
+        </template>
 
-        <UserCircleIcon class="cursor-pointer"
+        <!-- <UserCircleIcon class="cursor-pointer"
             :class="{ 'unlogged': userStore.isLoggedIn }"
             @click="flagMenuShow = !flagMenuShow"
-            aria-haspopup="true" aria-controls="overlay_menu" />
-        
-        <template v-if="userStore.isLoggedIn">
-            <Menu v-if="flagMenuShow" class="profile__menu" ref="menu" :model="menuItems"></Menu>
-        </template>
-        <template v-else>
-            <Menu v-if="flagMenuShow" class="profile__menu" ref="menu" :model="menuItems2"></Menu>
-        </template>
+            aria-haspopup="true" aria-controls="overlay_menu" /> -->
+
+        <div class="eventInterceptor" @click="flagMenuShow = !flagMenuShow"></div>
+
+        <div class="profile__userPhoto">
+            <skeleton-photo :srcPromise="userService.getUserPhoto()">
+                <template #no-photo>
+                    <UserCircleIcon class="cursor-pointer"
+                        :class="{ 'unlogged': userStore.isLoggedIn }"
+                        aria-haspopup="true" aria-controls="overlay_menu" />
+                </template>
+
+            </skeleton-photo>
+        </div>
     </div>
 </template>
 
@@ -36,15 +40,16 @@ import { useUserStore } from '@/stores/userStore/UserStore';
 import { ref } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 
+import SkeletonPhoto from '@/components/SkeletonLoaded/SkeletonPhoto.vue';
+import { userService } from '@/services/userService';
+
 const router = useRouter()
 const userStore = useUserStore()
 
 const menuItems: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-user', command: () => { router.push('/profile') } },
     { label: 'Settings', icon: 'pi pi-cog', command: () => { router.push('/settings') } },
-]
-const menuItems2: MenuItem[] = [
-    { label: 'Login', icon: 'pi pi-user', command: () => { router.push('/login') } },
+    { label: 'Logout', icon: 'pi pi-cog', command: () => { userStore.logout()} },
 ]
 const flagMenuShow = ref(false);
 
@@ -68,6 +73,12 @@ const logoutUser = async () => {
     aspect-ratio: 1/1;
     cursor: pointer;
 
+    .eventInterceptor {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+    }
+
     &__login {
         box-sizing: border-box;
         z-index: -1;
@@ -89,14 +100,23 @@ const logoutUser = async () => {
         z-index: 0;
         position: absolute;
         inset: 0;
-        background-color: $primaryDark;
+    }
+
+    &__userPhoto {
+        width: 2.5rem;
+        padding: .2rem;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        border: 1px solid $primaryGreen;
+
+        .photo { border-radius: 50%; }
     }
 
     > svg {
         position: relative;
         z-index: 2;
-        width: 2em;
-        height: 2em;
+        width: 3rem;
+        height: 3rem;
     }
 
     &.unlogged > svg {
@@ -108,6 +128,14 @@ const logoutUser = async () => {
         position: absolute;
         right: 0;
         top: calc(100% + .4rem);
+
+        &[data-show="true"] {
+            display: block;
+        }
+
+        &[data-show="false"] {
+            display: none;
+        }
     }
 }
 

@@ -11,7 +11,7 @@ export const routes = [
     { path: PATH_CONST.LOGIN, component: Login },
     { path: PATH_CONST.REGISTER, component: Register },
 
-    // Required Auth
+    // Required auth paths
     {
         path: '/courses',
         component: CourseCreate,
@@ -27,6 +27,12 @@ export const routes = [
         path: '/dashboard',
         requiredAuth: true,
         component: () => import('@/pages/Dashboard/Dashboard.vue'),
+        beforeEnter: requireAuth,
+    },
+    {
+        path: '/profile',
+        requiredAuth: true,
+        component: () => import('@/pages/User/Profile.vue'),
         beforeEnter: requireAuth,
     },
 ]

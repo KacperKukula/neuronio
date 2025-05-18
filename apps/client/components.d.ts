@@ -9,16 +9,22 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    Column: typeof import('primevue/column')['default']
+    DataTable: typeof import('primevue/datatable')['default']
+    Dropdown: typeof import('primevue/dropdown')['default']
     Editor: typeof import('primevue/editor')['default']
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
+    Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']
     SimpleInput: typeof import('./src/components/SimpleInput/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']
+    Skeleton: typeof import('primevue/skeleton')['default']
+    SkeletonPhoto: typeof import('./src/components/SkeletonLoaded/SkeletonPhoto.vue')['default']
   }
 }

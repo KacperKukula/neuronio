@@ -8,15 +8,17 @@
             <div class="login__form">
                 <h1>Login</h1>
 
-                <simple-input type="text" v-model="loginForm.name" placeholder="Username" />
-                <simple-input type="password" v-model="loginForm.password" placeholder="Password" />
-    
-                <!-- <button @click="loginUser">Login</button> -->
+                <Form v-slot="$form" :validateOnBlur="true" @submit="loginUser" class="flex flex-col gap-4 w-60">
+                    <FormField v-slot="$field" name="username">
+                        <InputText v-model="loginForm.name" name="username" type="text" placeholder="Username" fluid />
+                    </FormField>
 
-                <simple-input type="submit" @click="loginUser" value="Login" />
+                    <FormField v-slot="$field" name="password">
+                        <Password v-model="loginForm.password" :feedback="false" placeholder="Password" class="w-full" inputClass="w-full"/>
+                    </FormField>
 
-                <!--TODO: -->
-                <!--<simple-button>Hello world</simple-button>-->
+                    <Button type="submit" severity="secondary" label="Submit" />
+                </Form>
 
                 <Message v-if="serverErr" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
 
@@ -32,12 +34,9 @@ import { defineComponent, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore/UserStore';
 
-import { AuthService } from "@/services/AuthService";
 import { LoginDto } from "shared";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
-import { sessionManager } from "@/modules/session/SessionManager";
-import { userService } from "@/services/userService";
 
 import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';

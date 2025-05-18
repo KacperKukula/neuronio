@@ -1,10 +1,10 @@
+import type { EnumUserRole } from "@/common/enums/EnumUserRolels";
 import { Expose } from "class-transformer";
 
 export class User {
-    
-    @Expose()
-    accessToken?: string;
-
     @Expose()
     email?: string;
+
+    @Expose()
+    role?: EnumUserRole;
 }

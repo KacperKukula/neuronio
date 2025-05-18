@@ -27,6 +27,8 @@ nav {
     align-items: center;
     height: $navBarHeight;
 
+    background-color: black;
+
     .wraperLogo {
         height: 100%;
     }

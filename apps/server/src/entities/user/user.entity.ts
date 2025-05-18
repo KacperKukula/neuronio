@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { UserProfile } from './userProfile.entity';
 
 export enum UserRole {
     ADMIN = "admin",
@@ -20,10 +21,17 @@ export class User {
     @Column()
     email: string;
 
+    @Column({ nullable: true })
+    photoUrl: string;
+
     @Column({
         type: "enum",
         enum: UserRole,
         default: UserRole.STUDENT
     })
-    roles: string;
+    role: string;
+
+    @OneToOne(() => UserProfile)
+    @JoinColumn()
+    profile: UserProfile;
 }

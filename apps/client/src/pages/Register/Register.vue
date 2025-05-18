@@ -25,6 +25,14 @@
                     <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $form.lastName.error.message }}</Message>
                 </FormField>
                 <Button type="submit" severity="secondary" label="Submit" />
+
+                <Message v-if="serverErrors.length" severity="error" size="small" variant="simple">
+                    <ul>
+                        <li v-for="err in serverErrors" :key="err.property">
+                            {{ err.property }}: {{ err.constraints ? Object.values(err.constraints).join(', ') : 'Błąd serwera' }}
+                        </li>
+                    </ul>
+                </Message>
             </Form>
         </SimpleTile>
     </section>
@@ -50,7 +58,7 @@ import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
 import { RegisterDto } from "shared";
-import { validate } from "class-validator";
+import { validate, ValidationError } from "class-validator";
 import { AuthService } from "@/services/AuthService";
 
 export default defineComponent({
@@ -63,6 +71,8 @@ export default defineComponent({
         const router = useRouter();
 
         const registerForm = ref(new RegisterForm())
+
+        const serverErrors = ref<ValidationError[]>([]);
         
         const register = async () => {
 
@@ -80,12 +90,13 @@ export default defineComponent({
                 // const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
                 // const user = plainToInstance(UserDto, userCredential.user, { excludeExtraneousValues: true });
                 
-                const resp = await AuthService.register(registerDto)
-                console.log(resp)
+                const { errors }: { errors: ValidationError[] } = await AuthService.register(registerDto);
 
-                // if(!errors.length) router.push('/login');
-
-                router.push('/login');
+                if (!errors || errors.length === 0) {
+                    router.push('/login');
+                } else {
+                    serverErrors.value = errors;
+                }
                 
             } catch (error) {
                 console.error('Error logging in:', error);
@@ -94,7 +105,8 @@ export default defineComponent({
 
         return {
             register,
-            registerForm
+            registerForm,
+            serverErrors
         }
     }
 })

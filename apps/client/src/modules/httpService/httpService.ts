@@ -9,17 +9,14 @@ export class HttpService extends StaticModule {
     authorizedReq(throwErr: boolean = true): typeof ky {
         const token: string | null = sessionManager.getAccessToken();
 
-        console.log('😊', token)
-
-        if (!token && throwErr) {
-            throw new Error('User not logged in');
-        }
+        if (!token) throw new Error('No token found');
  
         return ky.create({
             prefixUrl: 'http://localhost:3000',
             headers: {
                 'Authorization': `Bearer ${token}`
-            }
+            },
+            throwHttpErrors: throwErr,
         });
     }
 }

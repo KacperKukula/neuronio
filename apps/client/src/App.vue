@@ -1,24 +1,26 @@
 <template>
   <NavBar />
 
-  <main>    
-    <RouterView />
+  <main>
+    <div v-if="isLoading">Ładowanie...</div>
+
+    <RouterView v-else />
   </main>
 </template>
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import NavBar from '@/layout/NavBar/NavBar.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useUserStore } from './stores/userStore/UserStore';
 
 const userStore = useUserStore()
+const isLoading = ref(true);
 
 onMounted(async () => {
-  await userStore.loadUser()
-  
-  console.log(userStore.user)
-})
+  await userStore.loadUser();
+  isLoading.value = false;
+});
 </script>
 
 <style lang="scss" scoped>

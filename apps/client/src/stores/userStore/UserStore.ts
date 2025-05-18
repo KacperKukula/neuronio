@@ -4,6 +4,8 @@ import type { UserDto } from './dtos/UserDto'
 import { plainToInstance } from 'class-transformer'
 import { sessionManager } from '@/modules/session/SessionManager'
 import { userService } from '@/services/userService'
+import { Utils } from '@/utils'
+import { useRouter } from 'vue-router'
 
 const USERSTORE_NAME = 'userStore'
 
@@ -14,20 +16,31 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
     }),
     actions: {
         async loadUser() {
+            const router = useRouter()
+
             this.isLoading = true;
-            try {
-                this.user = await userService.getCurrentUser();
+
+            const [error, data] = await Utils.catchError( userService.getCurrentUser() )
+
+            if(error || !data) {
+                this.clearUserData()
+                router.push('/login')
             }
-            catch(err) { this.user = null; }
-            finally { this.isLoading = false; }
+            
+            this.user = plainToInstance(User, data, { excludeExtraneousValues: true });
         },
         login(newUser: UserDto) {
             this.user = newUser;
-
-            // console.log('🍍', this.user, this.access_token)
         },
-        clearUser() {
+        logout() {
+            const router = useRouter()
+
+            this.clearUserData()
+            router.push('/login')
+        },
+        clearUserData() {
             this.user = null;
+            sessionManager.clearAccessToken();
         },
     },
     getters: {

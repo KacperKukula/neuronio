@@ -5,7 +5,7 @@ const TOKEN_NAME = 'access_token'
 
 class SessionManager {
 
-    private access_token: string | null;
+    private access_token: string | undefined;
 
     getAccessToken(): string | null {
         return this.access_token ?? sessionStorage.getItem(TOKEN_NAME);
@@ -17,7 +17,8 @@ class SessionManager {
     }
 
     clearAccessToken(): void {
-        this.access_token = null;
+        this.access_token = undefined;
+        sessionStorage.removeItem(TOKEN_NAME);
     }
 }
 

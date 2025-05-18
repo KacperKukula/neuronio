@@ -27,7 +27,6 @@ export class AuthService {
 
     async register(registerDto: RegisterDto): Promise<ValidationError[]> {
         const errors = await validate(registerDto);
-
         if(!errors.length) {
             const newUser = plainToInstance(User, registerDto);
             await this.userService.create(newUser);
