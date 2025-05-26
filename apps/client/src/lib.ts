@@ -1,3 +1,5 @@
+import { HTTPError } from "ky";
+
 export class Utils {
     /**
      * Simplifies the thy catch functionality
@@ -14,4 +16,14 @@ export class Utils {
                 return [error];
             });
     }
+
+    static async catchNetworkError<T>(promise: Promise<T>): Promise<{ error?: HTTPError; data?: T }> {
+        try {
+            const data = await promise;
+            return { data };
+        } catch (error) {
+            return { error: error as HTTPError };
+        }
+    }
+
 }

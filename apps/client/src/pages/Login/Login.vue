@@ -40,9 +40,8 @@ import { plainToInstance } from "class-transformer";
 
 import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
-import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
+import SimpleInput from '@/components/Simple/Input/SimpleInput.vue';
 import { Utils } from "@/lib";
-import { AuthModule } from "@/modules/auth/authModule";
 
 export default defineComponent({
     name: 'Login',
@@ -62,16 +61,15 @@ export default defineComponent({
             if(valErrors.length)
                 return console.error('Credentials not valid');
 
-            // try {
-            //     await login();
-            //     router.push('/dashboard');
-            // } catch (e) { console.error(e); }
+            const { error, data } = await Utils.catchNetworkError( userStore.login(loginDto) )
 
-            const [error, data] = await Utils.catchError( AuthModule.getInstance().login(loginDto) )
+            console.log('Login response:', data, error);
 
-            serverErr.value = error;
+            if (error) {
+                return serverErr.value = await error.response.json();
+            }
 
-            router.push('/dashboard');
+            //router.push('/dashboard');
         };
 
         return {

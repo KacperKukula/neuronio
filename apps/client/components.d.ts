@@ -22,7 +22,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']
-    SimpleInput: typeof import('./src/components/SimpleInput/SimpleInput.vue')['default']
+    SimpleInput: typeof import('./src/components/Simple/Input/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']
     Skeleton: typeof import('primevue/skeleton')['default']
     SkeletonPhoto: typeof import('./src/components/SkeletonLoaded/SkeletonPhoto.vue')['default']

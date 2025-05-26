@@ -6,6 +6,8 @@ import { sessionManager } from '@/modules/session/SessionManager'
 import { userService } from '@/services/userService'
 import { Utils } from '@/utils'
 import { useRouter } from 'vue-router'
+import type { LoginDto } from 'shared'
+import { AuthModule } from '@/modules/auth/authModule'
 
 const USERSTORE_NAME = 'userStore'
 
@@ -29,8 +31,12 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
             
             this.user = plainToInstance(User, data, { excludeExtraneousValues: true });
         },
-        login(newUser: UserDto) {
-            this.user = newUser;
+        async login(loginDto: LoginDto): Promise<User> {
+            const user = await AuthModule.getInstance().login(loginDto)
+
+            this.user = user;
+
+            return user;
         },
         logout() {
             const router = useRouter()

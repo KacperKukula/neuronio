@@ -4,6 +4,7 @@ import { SingletonModule } from "../abstract/SingletonModule";
 import { AuthService } from "@/services/AuthService";
 import type { LoginDto } from "shared";
 import { userService } from "@/services/userService";
+import type { User } from "@/stores/userStore/model/User";
 
 export class AuthModule extends SingletonModule {
 
@@ -16,12 +17,14 @@ export class AuthModule extends SingletonModule {
         sessionManager.clearAccessToken()    
     }
 
-    async login(loginDto: LoginDto) {
+    async login(loginDto: LoginDto): Promise<User> {
 
         const { user, access_token } = await AuthService.login(loginDto)
+
         sessionManager.setAccessToken(access_token)
-        this.userStore.login(user)
 
         userService.getCurrentUser()
+
+        return user;
     };
 }

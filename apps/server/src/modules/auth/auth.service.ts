@@ -18,7 +18,7 @@ export class AuthService {
     
     async signIn(loginDto: LoginDto) {
         const user = await this.userService.findByName(loginDto.name);
-        if (!user || !bcrypt.compare(loginDto.password, user.password)) {
+        if (!user || await !bcrypt.compare(loginDto.password, user.password)) {
             return null;
         }
         const { password, ...result } = user;
@@ -28,8 +28,12 @@ export class AuthService {
     async register(registerDto: RegisterDto): Promise<ValidationError[]> {
         const errors = await validate(registerDto);
         if(!errors.length) {
-            const newUser = plainToInstance(User, registerDto);
-            await this.userService.create(newUser);
+
+            const password = bcrypt.hashSync(registerDto.password, 10)
+            delete registerDto.password;
+
+            const newUser = plainToInstance(User, { password, ...registerDto });
+            // await this.userService.create(newUser);
         }
         return errors
     }

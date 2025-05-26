@@ -41,5 +41,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use "./SimpleInput.scss" as *;
+@use "./style.scss" as *;
 </style>

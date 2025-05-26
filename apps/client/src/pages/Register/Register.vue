@@ -7,109 +7,104 @@
         <SimpleTile class="register__form">
             <h1>Register</h1>
 
-            <Form v-slot="$form" :validateOnBlur="true" @submit="register" class="flex flex-col gap-4 w-60">
-                <FormField v-slot="$field" name="username">
-                    <InputText v-model="registerForm.name" name="username" type="text" placeholder="Username" fluid />
-                    <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
+            <Form @submit="register" class="flex flex-col gap-4 w-full sm:w-56">
+                <FormField name="username">
+                    <label for="username" class="mb-3">Username</label>
+                    <InputText v-model="username" name="username" type="text" placeholder="Username" fluid />
+                    <Message v-if="errors.username" severity="error" size="small" variant="simple">{{ errors.username }}</Message>
                 </FormField>
-                <FormField v-slot="$field" name="email">
-                    <InputText v-model="registerForm.email" name="email" type="text" placeholder="Email" fluid />
-                    <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
+                <FormField name="email">
+                    <label for="email" class="mb-3">Email</label>
+                    <InputText v-model="email" name="email" type="text" placeholder="Email" fluid />
+                    <Message v-if="errors.email" severity="error" size="small" variant="simple">{{ errors.email }}</Message>
                 </FormField>
-                <FormField v-slot="$field" name="passwd1">
-                    <InputText v-model="registerForm.firstPsswdTry" name="passwd1" type="text" placeholder="First password" fluid />
-                    <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $form.firstName.error.message }}</Message>
+                <FormField name="Password">
+                    <label for="Password" class="mb-3">Password</label>
+                    <InputText v-model="password" name="Password" type="password" placeholder="Password" fluid />
+                    <Message v-if="errors.password" severity="error" size="small" variant="simple">{{ errors.password }}</Message>
                 </FormField>
-                <FormField v-slot="$field" name="passwd2">
-                    <InputText v-model="registerForm.secondPsswdTry" name="passwd2" type="text" placeholder="Second password" fluid />
-                    <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $form.lastName.error.message }}</Message>
+                <FormField name="ConfirmPassword">
+                    <label for="ConfirmPassword" class="mb-3">Confirm password</label>
+                    <InputText v-model="confirmPassword" name="ConfirmPassword" type="password" placeholder="Password" fluid />
+                    <Message v-if="errors.confirmPassword" severity="error" size="small" variant="simple">{{ errors.confirmPassword }}</Message>
                 </FormField>
                 <Button type="submit" severity="secondary" label="Submit" />
-
-                <Message v-if="serverErrors.length" severity="error" size="small" variant="simple">
-                    <ul>
-                        <li v-for="err in serverErrors" :key="err.property">
-                            {{ err.property }}: {{ err.constraints ? Object.values(err.constraints).join(', ') : 'Błąd serwera' }}
-                        </li>
-                    </ul>
-                </Message>
             </Form>
+
         </SimpleTile>
     </section>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import "reflect-metadata";
-import { defineComponent, ref } from 'vue';
-import { signInWithEmailAndPassword, type UserCredential } from "firebase/auth";
-import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
-import { useRouter } from 'vue-router';
-import { UserDto } from '@/stores/userStore/dtos/UserDto';
-import { plainToInstance } from 'class-transformer';
-import { useUserStore } from '@/stores/userStore/UserStore';
-import { RegisterForm } from "./model/RegisterForm";
-
-import { Form } from '@primevue/forms';
-import { FormField } from '@primevue/forms';
-import InputText from "primevue/inputtext";
-import Message from "primevue/message";
-
-import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
-import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
-import SimpleInput from '@/components/SimpleInput/SimpleInput.vue';
 import { RegisterDto } from "shared";
 import { validate, ValidationError } from "class-validator";
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { plainToInstance } from 'class-transformer';
+import * as z from 'zod';
+
+import { RegisterForm } from "./model/RegisterForm";
 import { AuthService } from "@/services/AuthService";
+import { Form, FormField } from '@primevue/forms';
 
-export default defineComponent({
-    name: 'Login',
-    components: {
-        SimpleTile, SimpleInput, SimpleButton, InputText, FormField, Message
-    },
-    setup() {
-        const userStore = useUserStore();
-        const router = useRouter();
+import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
+import SimpleInput from "@/components/Simple/Input/SimpleInput.vue";
 
-        const registerForm = ref(new RegisterForm())
+import { useField, useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
 
-        const serverErrors = ref<ValidationError[]>([]);
-        
-        const register = async () => {
+const router = useRouter();
 
-            //TODO: 
-            const { firstPsswdTry, secondPsswdTry, ...cleanedForm } = registerForm.value;
+const registerForm = ref(new RegisterForm())
 
-            const registerDto = plainToInstance(RegisterDto, cleanedForm);
-            registerDto.password = firstPsswdTry;
-            const errors = await validate(registerDto);
+const serverErrors = ref<ValidationError[]>([]);
 
-            if(errors.length)
-                return console.error('Credentials not valid');
+const validationSchema = toTypedSchema(
+    z.object({
+        username: z.string().min(1, { message: 'This is required' }),
+        email: z.string().email({ message: 'Invalid email address' }),
+        password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+        secondPassword: z.string().min(6, { message: 'Password must be at least 6 characters' })
+    })
+);
 
-            try {
-                // const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email.value, password.value);
-                // const user = plainToInstance(UserDto, userCredential.user, { excludeExtraneousValues: true });
-                
-                const { errors }: { errors: ValidationError[] } = await AuthService.register(registerDto);
+const { errors } = useForm({
+  validationSchema,
+});
 
-                if (!errors || errors.length === 0) {
-                    router.push('/login');
-                } else {
-                    serverErrors.value = errors;
-                }
-                
-            } catch (error) {
-                console.error('Error logging in:', error);
-            }
-        };
+const { value: username } = useField<string>('username');
+const { value: email } = useField<string>('email');
+const { value: password } = useField<string>('password');
+const { value: confirmPassword } = useField<string>('confirmPassword');
 
-        return {
-            register,
-            registerForm,
-            serverErrors
+const register = async () => {
+
+    return;
+
+    //TODO: 
+    const { firstPsswdTry, secondPsswdTry, ...cleanedForm } = registerForm.value;
+
+    const registerDto = plainToInstance(RegisterDto, cleanedForm);
+    registerDto.password = firstPsswdTry;
+    const errors = await validate(registerDto);
+
+    if(errors.length)
+        return console.error('Credentials not valid');
+
+    try {                
+        const { errors }: { errors: ValidationError[] } = await AuthService.register(registerDto);
+
+        if (!errors || errors.length === 0) {
+            router.push('/login');
+        } else {
+            serverErrors.value = errors;
         }
+        
+    } catch (error) {
+        console.error('Error logging in:', error);
     }
-})
+};
 </script>
 
 <style lang="scss" scoped>
@@ -134,6 +129,7 @@ export default defineComponent({
     }
 
     &__form {
+        width: min(100%, 20rem);
         padding: 3rem 2rem;
         display: flex;
         flex-direction: column;

@@ -4,7 +4,11 @@
   <main>
     <div v-if="isLoading">Ładowanie...</div>
 
-    <RouterView v-else />
+    <RouterView v-else v-slot="{ Component }">
+      <transition name="fade">
+        <component :is="Component" />
+      </transition>
+    </RouterView>
   </main>
 </template>
 
