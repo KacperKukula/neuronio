@@ -63,13 +63,11 @@ export default defineComponent({
 
             const { error, data } = await Utils.catchNetworkError( userStore.login(loginDto) )
 
-            console.log('Login response:', data, error);
-
             if (error) {
                 return serverErr.value = await error.response.json();
             }
 
-            //router.push('/dashboard');
+            router.push('/dashboard');
         };
 
         return {

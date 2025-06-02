@@ -8,11 +8,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BlobCross: typeof import('./src/components/Loaders/BlobCross.vue')['default']
     Button: typeof import('primevue/button')['default']
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
     Editor: typeof import('primevue/editor')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
     InputText: typeof import('primevue/inputtext')['default']
@@ -24,7 +26,6 @@ declare module 'vue' {
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']
     SimpleInput: typeof import('./src/components/Simple/Input/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']
-    Skeleton: typeof import('primevue/skeleton')['default']
     SkeletonPhoto: typeof import('./src/components/SkeletonLoaded/SkeletonPhoto.vue')['default']
   }
 }

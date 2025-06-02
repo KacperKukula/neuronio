@@ -11,17 +11,13 @@
             <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="flagMenuShow"></Menu>
         </template>
 
-        <!-- <UserCircleIcon class="cursor-pointer"
-            :class="{ 'unlogged': userStore.isLoggedIn }"
-            @click="flagMenuShow = !flagMenuShow"
-            aria-haspopup="true" aria-controls="overlay_menu" /> -->
 
         <div class="eventInterceptor" @click="flagMenuShow = !flagMenuShow"></div>
 
         <div class="profile__userPhoto">
             <skeleton-photo :srcPromise="userService.getUserPhoto()">
                 <template #no-photo>
-                    <UserCircleIcon class="cursor-pointer"
+                    <UserCircleIcon class="cursor-pointer stroke-1"
                         :class="{ 'unlogged': userStore.isLoggedIn }"
                         aria-haspopup="true" aria-controls="overlay_menu" />
                 </template>

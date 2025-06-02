@@ -9,6 +9,7 @@
         <component :is="Component" />
       </transition>
     </RouterView>
+    
   </main>
 </template>
 

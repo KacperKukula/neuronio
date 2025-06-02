@@ -56,8 +56,6 @@ import { toTypedSchema } from '@vee-validate/zod';
 
 const router = useRouter();
 
-const registerForm = ref(new RegisterForm())
-
 const serverErrors = ref<ValidationError[]>([]);
 
 const validationSchema = toTypedSchema(
@@ -80,17 +78,19 @@ const { value: confirmPassword } = useField<string>('confirmPassword');
 
 const register = async () => {
 
-    return;
+    const registerDto = new RegisterForm({
+        name: username.value,
+        email: email.value,
+        password: password.value,
+    }); 
 
-    //TODO: 
-    const { firstPsswdTry, secondPsswdTry, ...cleanedForm } = registerForm.value;
-
-    const registerDto = plainToInstance(RegisterDto, cleanedForm);
-    registerDto.password = firstPsswdTry;
     const errors = await validate(registerDto);
 
     if(errors.length)
-        return console.error('Credentials not valid');
+        errors.forEach(error => serverErrors.value.push(error) );
+
+    if(errors.length)
+        console.log(registerDto, serverErrors.value)
 
     try {                
         const { errors }: { errors: ValidationError[] } = await AuthService.register(registerDto);

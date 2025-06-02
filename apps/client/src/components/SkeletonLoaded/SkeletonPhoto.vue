@@ -6,7 +6,6 @@
     <div v-else class="photo loaded" :style="{ backgroundImage: src ? `url('${src}')` : undefined }"></div>
 </template>
 
-
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 
