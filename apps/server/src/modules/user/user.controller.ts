@@ -1,9 +1,24 @@
-import { Controller, Get, Post, Body, Param, Delete, Request, UseGuards, Put } from '@nestjs/common';
+import {
+    Req,
+    Put,
+    Get,
+    Post,
+    Body,
+    Param,
+    Delete,
+    Controller,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { UserService } from './user.service';
 import { User } from '@/entities/user/user.entity';
 import { AuthGuard } from '@/modules/auth/auth.guard';
 import { UserProfile } from '@/entities/user/userProfile.entity';
 import { UpdateUserProfileDto } from 'shared';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import * as path from 'path';
 
 @Controller('users')
 export class UserController {
@@ -30,7 +45,7 @@ export class UserController {
     }
 
     @Post('getCurrentUser')
-    async getUserByToken(@Request() req: Request): Promise<Omit<User, 'password'>> {
+    async getUserByToken(@Req() req: Request): Promise<Omit<User, 'password'>> {
         
         //@ts-ignore
         const { password, ...user } = await this.userService.findOne(req.user.userId)
@@ -43,20 +58,37 @@ export class UserController {
     }
 
     @Post('userPhoto')
-    async getUserPhoto(@Request() req: Request): Promise<string> {
+    async getUserPhoto(@Req() req: Request): Promise<string> {
         //@ts-ignore
         return await this.userService.getUserPhoto(req.user.userId)
     }
 
     @Post('profile')
-    async getUserProfile(@Request() req: Request): Promise<UserProfile | null> {
+    async getUserProfile(@Req() req: Request): Promise<UserProfile | null> {
         //@ts-ignore
         return await this.userService.findProfileById(req.user.userId)
     }
 
     @Put('profile')
-    async updateUserProfile(@Request() req: Request, @Body() dto: UpdateUserProfileDto): Promise<UserProfile | null> {
+    async updateUserProfile(@Req() req: Request, @Body() dto: UpdateUserProfileDto): Promise<UserProfile | null> {
         //@ts-ignore
         return await this.userService.updateUserProfile(req.user.userId, dto);
+    }
+
+    /* AVATAR */
+
+    @Post('avatar')
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './uploads/avatars',
+            filename: (req, file, cb) => {
+                const ext = path.extname(file.originalname);
+                const filename = `${req.user.userId}${ext}`;
+                cb(null, filename);
+            }
+        })
+    }))
+    async uploadAvatar(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
+        return this.userService.uploadAvatar(file, req.user.userId);
     }
 }

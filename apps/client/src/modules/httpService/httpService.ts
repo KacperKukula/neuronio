@@ -21,4 +21,10 @@ export class HttpService extends StaticModule {
             throwHttpErrors: throwErr,
         });
     }
+
+    fileUploadReq(throwErr: boolean = true) {
+        return this.authorizedReq(throwErr).extend({
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+    }
 }
