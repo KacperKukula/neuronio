@@ -1,4 +1,5 @@
 const CommonPathsConst = {
+    HOME: '/',
     LOGIN: '/login',
     REGISTER: '/register',
 }

@@ -17,7 +17,6 @@ import { BeakerIcon } from '@heroicons/vue/24/outline';
     display: flex;
     align-items: center;
     gap: 4px;
-    background-color: black;
     height: 100%;
 }
 </style>

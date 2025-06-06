@@ -1,38 +1,39 @@
 import Dashboard from '@/pages/Dashboard/Dashboard.vue'
 import CourseCreate from '@/pages/Courses/Create/CourseCreate.vue'
-import Register from '@/pages/Register/Register.vue'
-import Login from '@/pages/Login/Login.vue'
+
+import { Route } from './classes/Route';
 import { requireAuth } from '@/router/guards';
 
-import PATH_CONST from './CommonPathsConst';
+import { globalRoutes } from './routes/globalRoutes';
 
 export const routes = [
-    { path: '/', component: Dashboard },
-    { path: PATH_CONST.LOGIN, component: Login },
-    { path: PATH_CONST.REGISTER, component: Register },
+    ...globalRoutes,
 
-    // Required auth paths
-    {
+    new Route({
+        label: 'Dashboard',
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard,
+        beforeEnter: requireAuth,
+    }),
+    new Route({
+        name: 'profile',
+        path: '/profile',
+        component: () => import('@/pages/User/Profile.vue'),
+        beforeEnter: requireAuth,
+    }),
+    new Route({
+        label: 'Courses',
+        name: 'courses',
         path: '/courses',
         component: CourseCreate,
         beforeEnter: requireAuth,
         children: [
-            {
-                path: 'create',
-                component: () => import('@/pages/Courses/Create/CourseCreate.vue')
-            }
+            new Route({
+                path: '/create',
+                name: 'course-create',
+                component: () => import('@/pages/Courses/Create/CourseCreate.vue'),
+            })
         ]
-    },
-    {
-        path: '/dashboard',
-        requiredAuth: true,
-        component: () => import('@/pages/Dashboard/Dashboard.vue'),
-        beforeEnter: requireAuth,
-    },
-    {
-        path: '/profile',
-        requiredAuth: true,
-        component: () => import('@/pages/User/Profile.vue'),
-        beforeEnter: requireAuth,
-    },
+    }),
 ]
