@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { FirebaseAuthGuard } from './modules/firebase-admin/FirebaseAuthGuard';
 import { ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@modules/auth/auth.guard';
+import * as express from 'express';
 
 async function bootstrap() {  
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Accept, Authorization',
     credentials: true,
   });
+
+  app.use('/uploads', express.static('uploads'));
 
   /* Class validator pipes for DTOs */
   app.useGlobalPipes(new ValidationPipe({ transform: true }));

@@ -7,19 +7,17 @@
                 <div :class="'profilePhoto'"
                     class="w-full aspect-1/1 p-6">
                     
-                    <div :class="'profilePhoto__display'"
+                    <label name="fileUpload" :class="'profilePhoto__display'"
                         class="w-full h-full group flex items-center justify-center shrink-1 rounded-full cursor-pointer"
                         style="background-color: black;">
 
                         <BlobCross v-if="isUserPhotoLoading" />
                         <template v-else>
-                            <FileUpload name="demo[]" url="/api/upload" :multiple="true" accept="image/*" :maxFileSize="1000000" @select="onSelectedFiles">
-                                <template #content>
-                                    <CameraIcon class="h-2/4 w-2/4 group-hover:scale-85 transition-transform ease-out" />
-                                </template>
-                            </FileUpload>
+                            <CameraIcon v-if="!userPhoto" class="h-2/4 w-2/4 group-hover:scale-85 transition-transform ease-out" />
+                            <img v-if="userPhoto" :src="userPhoto" class="w-full h-full object-cover rounded-full" />
+                            <input name="fileUpload" type="file" accept="image/*" class="hidden" @change="onSelectedFiles" />
                         </template>
-                    </div>
+                    </label>
 
                     <skeleton-photo :srcPromise="userService.getUserPhoto()" />
                 </div>
@@ -64,16 +62,21 @@ import FileUpload from 'primevue/fileupload';;
 import SkeletonPhoto from '@/components/SkeletonLoaded/SkeletonPhoto.vue';
 import { UpdateUserProfileDto } from 'shared';
 import BlobCross from '@/components/Loaders/BlobCross.vue';
+import { UploadManager } from '@/modules/upload/uploadMngr';
 
 const contentLoading = ref(true);
 
 const userPhoto = ref<string|null>(null)
-const isUserPhotoLoading = ref<boolean>(true)
+const isUserPhotoLoading = ref<boolean>(true) 
 
 const userProfileForm = ref<UserProfileForm>(new UserProfileForm());
 
-const onSelectedFiles = (e) => {
-    console.log(e)
+const onSelectedFiles = async (e) => {
+    const files = e.target.files;
+
+    if (files && files.length > 0) {
+        userPhoto.value = await UploadManager.uploadAvatar(files[0])
+    }
 }
 
 const sendForm = async () => {

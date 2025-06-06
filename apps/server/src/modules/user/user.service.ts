@@ -77,4 +77,12 @@ export class UserService {
 
         return savedProfile;
     }
+
+    async uploadAvatar(file: Express.Multer.File, userId: number): Promise<string> {
+        
+        const photoUrl = `/uploads/avatars/${file.filename}`;
+
+        await this.userRepository.update(userId, { photoUrl });
+        return photoUrl;
+    }
 }

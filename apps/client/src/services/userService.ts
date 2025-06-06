@@ -24,6 +24,12 @@ class UserService extends HttpService {
     async updateUserProfile(userProfile: UpdateUserProfileDto): Promise<User> {
         return await this.authorizedReq(false).put(`users/profile`, { json: userProfile }).json();
     }
+
+    /* USER AVATAR */
+
+    async uploadAvatar(formData: FormData) {
+        return await this.authorizedReq(false).post('users/avatar', { body: formData }).text();
+    }
 }
 
 export const userService = new UserService();
