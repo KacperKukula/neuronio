@@ -33,6 +33,7 @@ export const routes = [
         beforeEnter: requireAuth,
         children: [
             new Route({
+                label: 'Create',
                 path: '/create',
                 name: 'course-create',
                 component: () => import('@/pages/Courses/Create/CourseCreate.vue'),
