@@ -1,5 +1,5 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from './modules/auth/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AppService } from '@/app.service';
 
 @Controller()
@@ -16,7 +16,6 @@ export class AppController {
     return this.appService.postHello();
   }
 
-  @UseGuards(AuthGuard)
   @Get('test')
   test(): string {
     return 'Hello world';

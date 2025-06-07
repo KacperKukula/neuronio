@@ -46,7 +46,7 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
         },
         clearUserData() {
             this.user = null;
-            sessionManager.clearAccessToken();
+            sessionManager.clearTokens();
         },
     },
     getters: {

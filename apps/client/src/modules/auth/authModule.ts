@@ -13,15 +13,16 @@ export class AuthModule extends SingletonModule {
     userStore = useUserStore();
 
     signOut() {
-        this.userStore.clearUser()
-        sessionManager.clearAccessToken()    
+        this.userStore.clearUserData()
+        sessionManager.clearTokens()
     }
 
     async login(loginDto: LoginDto): Promise<User> {
 
-        const { user, access_token } = await AuthService.login(loginDto)
+        const { user, access_token, refresh_token } = await AuthService.login(loginDto)
 
         sessionManager.setAccessToken(access_token)
+        sessionManager.setRefreshToken(refresh_token)
 
         userService.getCurrentUser()
 

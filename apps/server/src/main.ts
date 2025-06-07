@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FirebaseAuthGuard } from './modules/firebase-admin/FirebaseAuthGuard';
 import { ValidationPipe } from '@nestjs/common';
-import { AuthGuard } from '@modules/auth/auth.guard';
+import { AuthGuard } from '@/guards/auth.guard';
 import * as express from 'express';
 
 async function bootstrap() {  

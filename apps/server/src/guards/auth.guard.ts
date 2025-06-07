@@ -11,7 +11,8 @@ export class AuthGuard implements CanActivate {
 
     private readonly allowedRoutes: string[] = [
         '/auth/signin',
-        '/auth/register'
+        '/auth/register',
+        '/auth/refresh',
     ]
     
     async canActivate(context: ExecutionContext): Promise<boolean>  {

@@ -7,12 +7,15 @@ import { requireAuth } from '@/router/guards';
 import { globalRoutes } from './routes/globalRoutes';
 
 export const routes = [
+
+    /* Global routes such as Login, Dashboard */
     ...globalRoutes,
 
     new Route({
         label: 'Dashboard',
         name: 'dashboard',
         path: '/dashboard',
+        icon: 'pi pi-palette',
         component: Dashboard,
         beforeEnter: requireAuth,
     }),

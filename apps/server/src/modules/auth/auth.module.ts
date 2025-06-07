@@ -4,8 +4,12 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '@modules/user/user.module';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserService } from '@modules/user/user.service';
+import { ConfigModule } from '@nestjs/config';
+import refreshJwtConfig from '@/conf/refresh-jwt.config';
+import { RefreshJwtStrategy } from './strategies/refresh.strategy';
+import { RefreshAuthGuard } from '@/guards/refresh.guard';
 
 @Module({
     imports: [
@@ -15,8 +19,9 @@ import { UserService } from '@modules/user/user.service';
             secret: 'i(kcewqibM78)PJ',
             signOptions: { expiresIn: '1h' },
         }),
+        ConfigModule.forFeature(refreshJwtConfig)
     ],
-    providers: [AuthService, JwtStrategy],
+    providers: [AuthService, JwtStrategy, RefreshJwtStrategy, RefreshAuthGuard],
     controllers: [AuthController],
     exports: [AuthService, JwtModule]
 })

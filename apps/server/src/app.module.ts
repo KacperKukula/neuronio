@@ -8,7 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from '@modules/auth/auth.module';
-import { AuthGuard } from '@/modules/auth/auth.guard';
+import { AuthGuard } from '@/guards/auth.guard';
 
 @Module({
   imports: [
