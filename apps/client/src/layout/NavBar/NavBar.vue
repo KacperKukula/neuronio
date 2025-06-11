@@ -23,21 +23,28 @@
 
         <!--RIGHT SIDE-->
         <template #end>
-            <Profile />
+            <ProfileMenu />
         </template>
     </Menubar>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import Profile from './Profile.vue';
-import Logo from './Logo.vue';
+import { computed, ref, watch } from 'vue';
 import { routes } from '@/router/routes';
 import { navRouteFactory } from '@/factories/NavRouteFactory';
+import { useUserStore } from '@/stores/userStore/UserStore';
+import { EnumUserRole, mapRoleKeyToVal } from '@/common/enums/EnumUserRolels';
+import ProfileMenu from './ProfileMenu.vue';
+import Logo from './Logo.vue';
 
-const items = navRouteFactory(routes)
+const userStore = useUserStore();
 
-console.log(items)
+const items = computed(() => {
+    const result = userStore.isLoggedIn
+        ? navRouteFactory(routes, mapRoleKeyToVal[userStore.user?.role])
+        : navRouteFactory(routes, EnumUserRole.GUEST);
+    return result;
+})
 </script>
 
 <style lang="scss" scoped>

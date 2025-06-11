@@ -1,5 +1,5 @@
+import { UploadUtils } from "@/common/UploadUtils";
 import { Course } from "@/entities/courses/course.entity";
-import { Module } from "@/entities/courses/module.entity";
 import { User } from "@/entities/user/user.entity";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -32,12 +32,29 @@ export class CoursesService {
     async getCoursesList(userId: number): Promise<Course[]> {
         return await this.coursesRepository.find({
             where: { owner: { id: userId } },
-            relations: ["owner", "participants"],
-        }); 
+        });
     }
 
-    async createModule(body: object) {
-        const module = plainToClass(Module, body);
-        return await this.coursesRepository.save(module);
+    async getCourseById(id: number): Promise<Course | null> {
+        const course = await this.coursesRepository.findOne({
+            where: { id },
+            relations: ["owner", "participants"],
+        });
+        return course;
+    }
+
+    async pushBlockId(courseId: number, blockId: number): Promise<void> {
+        const course = await this.coursesRepository.findOne({ where: { id: courseId } });
+        if (!course) throw new BadRequestException('Course not found');
+    }
+
+    async uploadBackground(file: Express.Multer.File, courseId: number): Promise<string> {
+        let filePath = file.path;
+
+        filePath = UploadUtils.backSlashToForwardSlash(filePath);
+        filePath = UploadUtils.shedWhiteSpaces(filePath);
+
+        await this.coursesRepository.update(courseId, { background: filePath });
+        return filePath;
     }
 }

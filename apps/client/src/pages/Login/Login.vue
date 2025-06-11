@@ -64,6 +64,8 @@ export default defineComponent({
             const { error, data } = await Utils.catchNetworkError( userStore.login(loginDto) )
 
             if (error) {
+                console.log('💘 Login error:', error);
+
                 return serverErr.value = await error.response.json();
             }
 

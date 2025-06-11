@@ -2,14 +2,21 @@
   <NavBar />
 
   <main>
-    <div v-if="isLoading">Ładowanie...</div>
-
-    <RouterView v-else v-slot="{ Component }">
-      <transition name="fade">
+<router-view v-slot="{ Component }">
+    <suspense timeout="0">
+      <!-- Default -->
+      <template #default>
         <component :is="Component" />
-      </transition>
-    </RouterView>
-    
+      </template>
+
+      <!-- Loading -->
+      <template #fallback>
+        <div class="w-full flex justify-center items-center">
+          <RadarLoader />
+        </div>
+      </template>
+    </suspense>
+  </router-view>
   </main>
 </template>
 
@@ -18,12 +25,14 @@ import { RouterLink, RouterView } from 'vue-router';
 import NavBar from '@/layout/NavBar/NavBar.vue';
 import { onMounted, ref } from 'vue';
 import { useUserStore } from './stores/userStore/UserStore';
+import RadarLoader from '@/components/Loaders/RadarLoader.vue';
 
 const userStore = useUserStore()
 const isLoading = ref(true);
 
 onMounted(async () => {
-  await userStore.loadUser();
+  userStore.loadUser()
+  
   isLoading.value = false;
 });
 </script>

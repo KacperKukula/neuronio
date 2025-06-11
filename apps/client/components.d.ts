@@ -8,13 +8,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
     BlobCross: typeof import('./src/components/Loaders/BlobCross.vue')['default']
     Button: typeof import('primevue/button')['default']
+    Carousel: typeof import('primevue/carousel')['default']
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
+    DataView: typeof import('primevue/dataview')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
     Editor: typeof import('primevue/editor')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
+    FloatLabel: typeof import('primevue/floatlabel')['default']
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
     InputText: typeof import('primevue/inputtext')['default']
@@ -22,12 +27,16 @@ declare module 'vue' {
     Menubar: typeof import('primevue/menubar')['default']
     Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
+    ProfileAvatar: typeof import('./src/components/ProfileAvatar/ProfileAvatar.vue')['default']
+    ProgressSpinner: typeof import('primevue/progressspinner')['default']
+    RadarLoader: typeof import('./src/components/Loaders/RadarLoader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']
     SimpleInput: typeof import('./src/components/Simple/Input/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']
     SkeletonPhoto: typeof import('./src/components/SkeletonLoaded/SkeletonPhoto.vue')['default']
+    Tag: typeof import('primevue/tag')['default']
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']

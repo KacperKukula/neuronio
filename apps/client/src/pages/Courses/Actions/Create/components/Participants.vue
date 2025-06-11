@@ -20,6 +20,7 @@
     <div class="paricipants">
         <h4>Participants</h4>
         <DataTable :value="props.modelValue" tableStyle="min-width: 50rem">
+            <Column field="photo" header="Photo"></Column>
             <Column field="email" header="Email"></Column>
             <Column field="name" header="Name"></Column>
             <Column field="actions" header="Remove">

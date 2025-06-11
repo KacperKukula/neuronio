@@ -6,7 +6,7 @@ import type { UpdateUserProfileDto } from "shared";
 class UserService extends HttpService {
 
     async getCurrentUser(): Promise<{ user: User }> {
-        return this.authorizedReq().post('users/getCurrentUser').json();
+        return await this.authorizedReq().post('users/getCurrentUser').json();
     }
 
     async searchForUsers(searchPhrase: string): Promise<string> {

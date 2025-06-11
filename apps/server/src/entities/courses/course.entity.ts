@@ -9,7 +9,7 @@ import {
     OneToMany,
 } from 'typeorm';
 import { User } from '@/entities/user/user.entity';
-import { Module } from '@/entities/courses/module.entity';
+import { Block } from '@/entities/courses/block.entity';
 
 @Entity({
     schema: 'courses',
@@ -28,10 +28,13 @@ export class Course {
     @ManyToOne(() => User)
     owner: User;
 
+    @Column({ nullable: true })
+    background: string;
+
     @ManyToMany(() => User)
     @JoinTable({ name: 'participants' })
     participants: User[];
 
-    @OneToMany(() => Module, module => module.course)
-    modules: Module[];
+    @OneToMany(() => Block, block => block.course)
+    blocks: Block[];
 }

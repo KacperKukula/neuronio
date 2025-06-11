@@ -25,24 +25,37 @@ import { useCreateCourseForm } from './useCreateCourseForm';
 import { useRouter } from 'vue-router';
 import Button from 'primevue/button';
 import Participants from './components/Participants.vue';
+import { CreateCourseDto } from 'shared';
+import { useUserStore } from '@/stores/userStore/UserStore';
+import { Utils } from '@/utils';
+import { courseService } from '@/services/courseService';
+import CommonPathsConst from '@/router/CommonPathsConst';
 
 const name = ref<string>('')
 const description = ref<string>('')
 const participants = ref([]);
 
 const router = useRouter();
-const { sendForm, createCourseForm } = useCreateCourseForm();
+const userStore = useUserStore();
 
 const onFormSubmit = async () => {
-    const createCourseDto = createCourseForm(name.value, description.value, participants.value)
-    const [error, data] = await sendForm(createCourseDto);
+    
+    const courseDto = new CreateCourseDto();
+    courseDto.name = name.value;
+    courseDto.description = description.value
+    courseDto.owner = userStore.user?.id
+    
+    courseDto.participants = participants.value.map((p) => p.id)
 
-    console.log(error, data)
-
+    const [error, data] = await Utils.catchError( courseService.createCourse(courseDto) );
+    
     if( error )
         console.error(error)
     else
-        router.push('/dashboard')
+        router.push({
+            name: CommonPathsConst.COURSES,
+            params: { id: data.id }
+        })
 }
 </script>
 

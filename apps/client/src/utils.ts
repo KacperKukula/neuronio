@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 export class Utils {
 
     static catchError<T>(promise: Promise<T>): Promise<[undefined, T] | [Error]> {
@@ -8,5 +10,9 @@ export class Utils {
             .catch((error) => {
                 return [error];
             });
+    }
+
+    static sanitize(text: string) {
+        return DOMPurify.sanitize(text ?? '').replace(/&nbsp;/g, ' ');
     }
 }

@@ -1,3 +1,5 @@
+import type { EnumUserRole } from "@/common/enums/EnumUserRolels";
+
 export class Route {
     path: string;
     name: string;
@@ -12,6 +14,11 @@ export class Route {
     /* Pointer to childrens - Prime Vue syntax for navbar */
     items?: Route[] | null = this.children;
 
+    /* Show in menu navbar */
+    showInMenu?: boolean;
+
+    minRole?: EnumUserRole;
+
     constructor(params: RouteParams) {
         this.path = params.path;
         this.name = params.name;
@@ -24,6 +31,8 @@ export class Route {
         this.badge = params.badge;
         
         this.items = this.children;
+        this.showInMenu = params.showInMenu ?? true;
+        this.minRole = params.minRole;
     }    
 }
 
@@ -36,4 +45,6 @@ interface RouteParams {
     label?: string;
     icon?: string;
     badge?: string;
+    showInMenu?: boolean;
+    minRole?: EnumUserRole;
 }

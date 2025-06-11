@@ -1,6 +1,6 @@
 import type { ModuleType } from "@/common/enums/courses/ModuleTypes";
 import type { Course } from "@/common/models/Course";
-import { Module } from "@/common/models/courses/Module";
+import { Module } from "@/common/models/Module";
 import { courseService } from "@/services/courseService";
 
 export function useCourseCreator() {

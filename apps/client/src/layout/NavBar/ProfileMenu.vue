@@ -1,7 +1,5 @@
 <template>
-    <div class="profile">
-
-        <div class="profile__background"></div>
+    <div :class="'profile'" class="gap-3">
 
         <template v-if="!userStore.isLoggedIn">
             <router-link to="/login" class="profile__login" @click="loginUser">Login</router-link>
@@ -11,33 +9,36 @@
             <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="flagMenuShow"></Menu>
         </template>
 
+        <div class="profile__userPhoto" @click="flagMenuShow = !flagMenuShow">
 
-        <div class="eventInterceptor" @click="flagMenuShow = !flagMenuShow"></div>
+            <!--@error="e => console.log('IMG ERROR', e, userStore.user?.photoUrl)"-->
+            <img v-if="userStore.user?.photoUrl" :src="UploadManager.pathToUrl(userStore.user?.photoUrl)" 
+                class="rounded-full" />
 
-        <div class="profile__userPhoto">
-            <skeleton-photo :srcPromise="userService.getUserPhoto()">
+            <UserCircleIcon v-else class="cursor-pointer stroke-1"
+                :class="{ 'unlogged': userStore.isLoggedIn }"
+                aria-haspopup="true" aria-controls="overlay_menu" />
+
+            <!-- <skeleton-photo :srcPromise="userService.getUserPhoto()" >
                 <template #no-photo>
                     <UserCircleIcon class="cursor-pointer stroke-1"
                         :class="{ 'unlogged': userStore.isLoggedIn }"
                         aria-haspopup="true" aria-controls="overlay_menu" />
                 </template>
 
-            </skeleton-photo>
+            </skeleton-photo> -->
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { firebaseAuth } from '@/modules/firebase/firebaseAuth';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 
 import { useUserStore } from '@/stores/userStore/UserStore';
 import { ref } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
-
-import SkeletonPhoto from '@/components/SkeletonLoaded/SkeletonPhoto.vue';
-import { userService } from '@/services/userService';
+import { UploadManager } from '@/modules/upload/uploadMngr';
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -52,11 +53,6 @@ const flagMenuShow = ref(false);
 const loginUser = async () => {
     router.push('/login')
 };
-
-const logoutUser = async () => {
-    await firebaseAuth.signOut();
-    router.push('/login')
-}
 </script>
 
 <style lang="scss" scoped>
@@ -66,7 +62,6 @@ const logoutUser = async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 1/1;
     cursor: pointer;
 
     .eventInterceptor {
@@ -75,37 +70,12 @@ const logoutUser = async () => {
         z-index: 20;
     }
 
-    &__login {
-        box-sizing: border-box;
-        z-index: -1;
-        height: fit-content;
-        position: absolute;
-        margin: auto 0;
-        inset: 0;
-        right: auto;
-
-        font-size: 1.1rem;
-        text-decoration: none;
-        color: white;
-        font-weight: 500;
-
-        transform: translateX(-100%);
-    }
-
-    &__background {
-        z-index: 0;
-        position: absolute;
-        inset: 0;
-    }
-
     &__userPhoto {
         width: 2.5rem;
         padding: .2rem;
         aspect-ratio: 1/1;
         border-radius: 50%;
         border: 1px solid $primaryGreen;
-
-        .photo { border-radius: 50%; }
     }
 
     > svg {

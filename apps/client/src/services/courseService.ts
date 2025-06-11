@@ -1,4 +1,5 @@
-import type { Module } from "@/common/models/courses/Module";
+import type { Course } from "@/common/models/Course";
+import type { Module } from "@/common/models/Module";
 import { HttpService } from "@/modules/httpService/httpService";
 import type { CourseDto, CreateCourseDto } from "shared";
 
@@ -13,12 +14,16 @@ class CourseService extends HttpService {
     }
 
     async getUserCourses(): Promise<CourseDto[]> {
-        return await this.authorizedReq(false).get('courses/userCourses').json<CourseDto[]>();
+        return await this.authorizedReq(false).get('courses/userCourses').json();
     }
 
-    // Modules
-    async createModule(module: Module): Promise<string> {
-        return await this.authorizedReq(false).post('courses/module', { json: module }).json();
+    async getCourse(id: number): Promise<Course> {
+        return await this.authorizedReq(true).get(`courses/get/${id}`).json<Course>();
+    }
+
+    /* UPLOAD */
+    async uploadBackground(formData: FormData, courseId: string): Promise<string> {
+        return await this.authorizedReq(true).post(`courses/upload?courseId=${courseId}`, { body: formData }).text();
     }
 }
 

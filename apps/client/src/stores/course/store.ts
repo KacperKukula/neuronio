@@ -7,8 +7,8 @@ const COURSESTORE_NAME = 'courseStore'
 
 export const useCourseStore = defineStore(COURSESTORE_NAME, {
     state: () => ({
-        /* Current user courses */
-        courses: [] as object[],
+        /* Current user courses map <id, Course> */
+        courses: new Map<number, Course>(),
         /* Current course witch is selected */
         selectedCourse: null as object | null,
         /* Mode of current course */
@@ -22,12 +22,19 @@ export const useCourseStore = defineStore(COURSESTORE_NAME, {
             this.mode = CourseMode.VIEW
         },
         async retriveCourses() {
-            if (this.courses.length === 0)
-                this.courses = courseService.getUserCourses()
-            return this.courses
+            if (this.courses.size !== 0)
+                return Array.from(this.courses.values());
+            
+            const coursesArr = await courseService.getUserCourses()
+            this.courses = new Map(coursesArr.map(course => [course.id, course]));
+
+            return this.courses;
         },
-        setSelectedCourse(course: object) {
-            this.selectedCourse = course;
+        async retriveCourse(courseId: number) {
+            if(this.courses.has(courseId)) return this.courses.get(courseId);
+
+            const course = courseService.getCourse(courseId);
+            this.courses.set(courseId, course);
         }
     },
     getters: {

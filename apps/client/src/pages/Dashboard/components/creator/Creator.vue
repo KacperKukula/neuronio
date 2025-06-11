@@ -36,7 +36,7 @@ import { computed, onMounted, ref } from 'vue';
 import DOMPurify from 'dompurify';
 import { ModuleType } from '@/common/enums/courses/ModuleTypes';
 import { useCourseCreator } from './useCourseCreator';
-import { Module } from '@/common/models/courses/Module';
+import { Module } from '@/common/models/Module';
 
 const courseStore = useCourseStore();
 const {
