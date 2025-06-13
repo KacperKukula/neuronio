@@ -18,4 +18,8 @@ export class BlocksService {
         //@ts-ignore
         this.coursesService.pushBlockId(block.course, newBlock.id)
     }
+
+    async updateBlockOrder(id: number, order: number): Promise<void> {
+        await this.blockRepository.update(id, { order });
+    }
 }

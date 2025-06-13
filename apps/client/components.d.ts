@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AlertArea: typeof import('./src/components/Alerts/AlertArea.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
     BlobCross: typeof import('./src/components/Loaders/BlobCross.vue')['default']

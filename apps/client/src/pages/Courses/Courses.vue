@@ -7,23 +7,23 @@
 
             <DataView :value="courses">
                 <template #list="slotProps">
+
+                    <!--COURSE TILE-->
                     <div class="flex flex-col gap-4">
                         <div v-for="(item, index) in slotProps.items" :key="index" :class="'courseTile'">
                             
-                            <div class="courseTile__img">
-                                <img :src="item.image ? item.image : DEFAULT_IMG_SOURCE" class="w-full h-full object-cover rounded-lg" />
+                            <div :class="'courseTile__img'" class="brightness-75">
+                                <img :src="item.background ? UploadManager.pathToUrl(item.background) : DEFAULT_IMG_SOURCE" class="w-full h-full object-cover rounded-lg" />
                             </div>
 
                             <div :class="'courseTile__content'" class="p-5">
                                 <h3>{{ item.name }}</h3>
-
                                 <p class="text-surface-500 dark:text-surface-400">{{ Utils.sanitize(item.description) }}</p>
-
                                 <CourseSupport :courseId="item.id"/>
                             </div>
-
                         </div>
                     </div>
+
                 </template>
             </DataView>
         </template>
@@ -36,6 +36,7 @@ import { useRouter } from 'vue-router';
 import { Utils } from '@/utils';
 import CourseSupport from './components/CourseSupport.vue';
 import NoCourses from './components/NoCourses.vue';
+import { UploadManager } from '@/modules/upload/uploadMngr';
 
 const DEFAULT_IMG_SOURCE = '/imgs/no-image.png';
 
@@ -43,7 +44,6 @@ const courseStore = useCourseStore()
 const router = useRouter();
 
 const courses = await courseStore.retriveCourses();
-
 </script>
 
 <style lang="scss" scoped>

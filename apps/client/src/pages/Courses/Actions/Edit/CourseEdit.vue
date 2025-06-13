@@ -27,11 +27,47 @@
                 <p>Owner: {{ course.owner?.name }}</p>
             </div>
 
-            <AddModule @add="createNewModule" />
+            <div v-if="courseBlocks" :class="'courseEdit__modules'" class="flex flex-col gap-3 py-4">
 
-            <template v-if="newModule">
-                <EditModule :module="newModule" @submit="saveNewModule" />
-            </template>
+                <div :class="'blockView'" :data-order="block.order" v-for="(block, inx) in courseBlocks" :key="inx">
+
+                    <div :class="`teleport-space-${block.order}`"></div>
+
+                    <div v-if="activeOrder !== block.order" class="addBar">
+                        <div class="addBar__icon" @click="addOnOrder(block.order)">
+                            <i class="pi pi-plus" style="color: white; font-size: .75rem"></i>
+                        </div>
+                    </div>
+
+                    <div class="blockArea">
+
+                        <div class="blockArea--mark"></div>
+                        <div class="blockArea--support">
+                            <Button icon="pi pi-pi-pencil" severity="info" rounded aria-label="User" />
+                        </div>
+
+                        <BlockRenderer :block="block" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="addingOnEnd">
+                <div :class="'teleport-space-end'"></div>
+
+                <div v-if="!isAddingOnEnd" :class="'addPlaceholder'" class="cursor-pointer rounded-lg" @click="addOnEnd()">
+                    <i class="pi pi-plus"></i>
+                </div>
+            </div>
+
+            <teleport v-if="addModuleTarget" :to="addModuleTarget">
+                <template v-if="newModule">
+                    <EditModule :module="newModule" @submit="saveNewBlock" />
+                </template>
+
+                <template v-else>
+                    <AddBlock @add="createNewModule" />
+                </template>
+            </teleport>
         </div>
     </section>
 </template>
@@ -40,23 +76,34 @@
 import { useRoute } from 'vue-router';
 import { courseService } from '@/services/courseService';
 import { Utils } from '@/utils';
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { Module } from '@/common/models/Module';
 import { ModuleType } from '@/common/enums/courses/ModuleTypes';
 import { Course } from '@/common/models/Course';
 
-import AddModule from './components/AddModule.vue';
-import EditModule from '../../Modules/EditModule.vue';
+import EditModule from '../../Blocks/EditModule.vue';
 import { blockService } from '@/services/blockService';
 import { UploadManager } from '@/modules/upload/uploadMngr';
 import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
+import type { Block } from '@/common/models/Block';
+import BlockRenderer from '../../Blocks/BlockRenderer.vue';
+import AddBlock from './components/AddBlock.vue';
 
 const route = useRoute()
 const courseId = route.params.id
-const course = ref<null|Course>(null)
+
+/* COURSE DATA */
+const course = ref<null|Course>()
+/* BLOCK COURSE DATA */
+const courseBlocks = ref<null|Block[]>()
+
+const addModuleTarget = ref<null|string>()
+
+const activeOrder = ref<null|number>()
+const isAddingOnEnd = ref<null|boolean>(false)
 
 const newModule = ref<null|Module>(null);
-const courseBckg = ref<null|string>()
+const courseBckg = ref<null|string>();
 
 const createNewModule = (type: ModuleType) => {
     if(!type) {
@@ -67,12 +114,40 @@ const createNewModule = (type: ModuleType) => {
     newModule.value = new Module(type)
 }
 
-const saveNewModule = (blockCompleted: Module) => {
-    blockCompleted.order = 1
-    blockCompleted.course = courseId
+const saveNewBlock = async (blockCompleted: Module) => {
 
-    blockService.addBlock(blockCompleted)
+    const targetOrder = isAddingOnEnd.value ? (courseBlocks.value?.length + 1) : activeOrder.value;
+
+    if (!isAddingOnEnd.value && courseBlocks.value) {
+        // Zwiększ order o 1 dla bloków >= targetOrder
+        for (const block of courseBlocks.value) {
+            if (block.order >= targetOrder) {
+                block.order += 1;
+                await blockService.updateBlockOrder(block);
+            }
+        }
+    }
+
+    // Dodaj nowy blok z odpowiednim orderem
+    blockCompleted.order = targetOrder;
+
+    blockCompleted.course = courseId;
+    await blockService.addBlock(blockCompleted);
+
+    // Odśwież listę bloków
+    await reloadBlocks();
+
+    // Resetuj stan
+    newModule.value = null;
+    activeOrder.value = null;
+    isAddingOnEnd.value = false;
+    addModuleTarget.value = null;
 }
+
+const reloadBlocks = async () => {
+    courseBlocks.value = await courseService.getCourseBlocks(courseId);
+    courseBlocks.value?.sort((a, b) => a.order - b.order);
+};
 
 const onUpload = async (e: { files: File[] }) => {
     const files = e.files;
@@ -82,16 +157,38 @@ const onUpload = async (e: { files: File[] }) => {
     }
 }
 
+const addOnOrder = (order: number) => {
+
+    isAddingOnEnd.value = false; // Clear visibility on other
+    activeOrder.value = order;
+
+    addModuleTarget.value = `.teleport-space-${order}`
+}
+
+const addOnEnd = () => {
+    activeOrder.value = null; // Clear visibility on other'
+    isAddingOnEnd.value = true;
+
+    addModuleTarget.value = `.teleport-space-end`
+}
+
 onMounted(async () => {
     course.value = await courseService.getCourse(courseId);
 
-    // Check if background image is set
-    if(course.value?.background)
-    courseBckg.value = UploadManager.pathToUrl(course.value.background);
+    // Get modules
+    reloadBlocks()
+
+    // Check if background image is set and if true just set it
+    if(course.value?.background) courseBckg.value = UploadManager.pathToUrl(course.value.background);
+
+    await nextTick()
 })
 </script>
 
 <style lang="scss" scoped>
+@use './scss/blockArea' as *;
+@use './scss/addBar' as *;
+
 .courseEdit {
     width: min(100%, 1600px);
     padding: 3rem 2rem;
@@ -116,6 +213,20 @@ onMounted(async () => {
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+}
+
+.addPlaceholder {
+    min-height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed white;
+    opacity: 0.45;
+    transition: all .3s ease;
+
+    &:hover {
+        opacity: .8;
     }
 }
 </style>

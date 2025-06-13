@@ -1,5 +1,5 @@
 <template>
-    <Menubar :model="items">
+    <Menubar id="navbar" :model="items">
 
         <!--LEFT SIDE-->
         <template #start>

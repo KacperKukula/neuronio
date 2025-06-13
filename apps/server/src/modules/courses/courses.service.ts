@@ -1,4 +1,5 @@
 import { UploadUtils } from "@/common/UploadUtils";
+import { Block } from "@/entities/courses/block.entity";
 import { Course } from "@/entities/courses/course.entity";
 import { User } from "@/entities/user/user.entity";
 import { BadRequestException, Injectable } from "@nestjs/common";
@@ -14,7 +15,9 @@ export class CoursesService {
         @InjectRepository(Course)
         private coursesRepository: Repository<Course>,
         @InjectRepository(User)
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        @InjectRepository(Block)
+        private blockRepository: Repository<Block>
     ) {}
 
     async createCourses(courseDto: CreateCourseDto): Promise<Course> {
@@ -46,6 +49,12 @@ export class CoursesService {
     async pushBlockId(courseId: number, blockId: number): Promise<void> {
         const course = await this.coursesRepository.findOne({ where: { id: courseId } });
         if (!course) throw new BadRequestException('Course not found');
+    }
+    
+    async getCourseBlocks(courseId: number): Promise<Block[]> {
+        return await this.blockRepository.find({
+            where: { course: { id: courseId } }
+        });
     }
 
     async uploadBackground(file: Express.Multer.File, courseId: number): Promise<string> {

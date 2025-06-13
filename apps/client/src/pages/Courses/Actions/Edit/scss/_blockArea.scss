@@ -1,0 +1,32 @@
+.blockArea {
+    position: relative;
+
+    &--support {
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        transition: opacity .4s ease;
+    }
+
+    &--mark {
+        position: absolute;
+        inset: -4px;
+        border: 1px dashed white;
+        opacity: 0;
+        z-index: -1;
+        border-radius: 2px;
+        transition: opacity .4s ease;
+    }
+
+    &:hover {
+
+        .blockArea--support {
+            opacity: 1;
+        }
+
+        .blockArea--mark {
+            opacity: .1;
+        }
+    }
+}

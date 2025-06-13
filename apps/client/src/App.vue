@@ -1,6 +1,8 @@
 <template>
   <NavBar />
 
+  <AlertArea />
+
   <main>
 <router-view v-slot="{ Component }">
     <suspense timeout="0">

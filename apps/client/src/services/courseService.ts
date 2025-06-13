@@ -1,3 +1,4 @@
+import type { Block } from "@/common/models/Block";
 import type { Course } from "@/common/models/Course";
 import type { Module } from "@/common/models/Module";
 import { HttpService } from "@/modules/httpService/httpService";
@@ -19,6 +20,10 @@ class CourseService extends HttpService {
 
     async getCourse(id: number): Promise<Course> {
         return await this.authorizedReq(true).get(`courses/get/${id}`).json<Course>();
+    }
+
+    async getCourseBlocks(id: number): Promise<Block[]> {
+        return await this.authorizedReq(true).get(`courses/blocks/${id}`).json<Block[]>()
     }
 
     /* UPLOAD */

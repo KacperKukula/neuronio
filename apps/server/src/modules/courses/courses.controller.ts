@@ -7,6 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateCourseDto } from 'shared';
 import { diskStorage } from 'multer';
 import { Request } from 'express';
+import { Block } from '@/entities/courses/block.entity';
 
 @Controller('courses')
 export class CoursesController {
@@ -40,6 +41,14 @@ export class CoursesController {
     @Get('userCourses')
     async getUserCourses(@Req() req: Request): Promise<Course[]> {
         return await this.coursesService.getCoursesList(req.user.userId);
+    }
+
+    @Get('blocks/:id')
+    async getCourseBlocks(
+        @Param('id', ParseIntPipe) id: number,
+        @Req() req: Request
+    ): Promise<Block[]> {
+        return await this.coursesService.getCourseBlocks(id);
     }
 
     /* UPLOAD */

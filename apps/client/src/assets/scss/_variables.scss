@@ -3,6 +3,8 @@ $luxuryDark: #030303;
 $primaryDark: #252527;
 $darkLighter: #353538;
 
+$primaryGrey: #525252;
+
 $primaryGreen: #00b894;
 $primaryRed: #d63031;
 $primaryBlue: #0984e3;
@@ -17,6 +19,9 @@ $rainbow:
     $primaryGreen,
     $primaryBlue,
     $primaryPurple;
+
+/* Border radiuses */
+$borderLarge: 2rem;
 
 /* Sizes */
 $navBarHeight: 3rem;
