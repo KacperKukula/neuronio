@@ -24,8 +24,6 @@ export class FirebaseAuthGuard implements CanActivate {
             credential: firebase.credential.cert(firebaseConf),
             databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
         });
-
-        console.log("🔥 firebase initialized")
     }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {

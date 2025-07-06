@@ -34,7 +34,11 @@ export class CoursesService {
 
     async getCoursesList(userId: number): Promise<Course[]> {
         return await this.coursesRepository.find({
-            where: { owner: { id: userId } },
+            where: [
+                { owner: { id: userId } },
+                { participants: { id: userId } }
+            ],
+            relations: ['owner', 'participants'],
         });
     }
 
@@ -57,6 +61,56 @@ export class CoursesService {
         });
     }
 
+    async getCourseParticipants(courseId: number): Promise<User[]> {
+        const course = await this.coursesRepository.findOne({
+            where: { id: courseId },
+            relations: ['participants'],
+        });
+        return course?.participants ?? [];
+    }
+
+    async addParticipant(courseId: number, userId: number) {
+        const course = await this.coursesRepository.findOne({
+            where: { id: courseId },
+            relations: ['participants'],
+        });
+        if (!course) throw new Error('Course not found');
+
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) throw new Error('User not found');
+
+        if (course.participants.some((p: User) => p.id === userId)) {
+            throw new Error('User is already a participant');
+        }
+
+        course.participants.push(user);
+        await this.coursesRepository.save(course);
+        return course;
+    }
+
+    async removeParticipant(courseId: number, userId: number) {
+        const course = await this.coursesRepository.findOne({
+            where: { id: courseId },
+            relations: ['participants'],
+        });
+        if (!course) throw new Error('Course not found');
+
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) throw new Error('User not found');
+
+        // Sprawdź, czy użytkownik jest uczestnikiem
+        const participantIndex = course.participants.findIndex((p: User) => p.id === userId);
+        if (participantIndex === -1) {
+            throw new Error('User is not a participant');
+        }
+
+        // Usuń użytkownika z listy uczestników
+        course.participants.splice(participantIndex, 1);
+        await this.coursesRepository.save(course);
+        return course;
+    }
+
+    /* UPLOAD */
     async uploadBackground(file: Express.Multer.File, courseId: number): Promise<string> {
         let filePath = file.path;
 

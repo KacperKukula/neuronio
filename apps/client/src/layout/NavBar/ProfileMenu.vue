@@ -32,21 +32,26 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 
 import { useUserStore } from '@/stores/userStore/UserStore';
-import { ref } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 import { UploadManager } from '@/modules/upload/uploadMngr';
+import CommonPathsConst from '@/router/CommonPathsConst';
 
 const router = useRouter()
 const userStore = useUserStore()
 
 const menuItems: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-user', command: () => { router.push('/profile') } },
-    { label: 'Settings', icon: 'pi pi-cog', command: () => { router.push('/settings') } },
-    { label: 'Logout', icon: 'pi pi-cog', command: () => { userStore.logout()} },
+    { label: 'Settings', icon: 'pi pi-cog', command: () => { router.push('/preferences') } },
+    { label: 'Logout', icon: 'pi pi-sign-out', command: () => { 
+            userStore.logout();
+            router.push(CommonPathsConst.LOGIN)
+        }
+    },
 ]
 const flagMenuShow = ref(false);
 

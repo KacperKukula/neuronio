@@ -1,0 +1,20 @@
+{
+    "hello": "Hello from pl",
+    "blocks": {
+        "definitions": "Definicje"
+    },
+    "common": {
+        "add": "Dodaj",
+        "delete": "Usuń"
+    },
+    "errors": {
+        "noResponse": "Nasze serwery są tymczasowo niedostępne",
+        "invalidCredentials": "Login lub hasło nie są poprawne"
+    },
+    "salesPages": {
+        "home": {
+            "hero_header": "Aby uczyć się szybciej i skuteczniej, najpierw trzeba zrozumieć, jak działa sam proces uczenia się",
+            "hero_text": "First e-learning platform to focus on the needs of the younger generation"
+        }
+    }
+}

@@ -31,7 +31,7 @@ export class Route {
         this.badge = params.badge;
         
         this.items = this.children;
-        this.showInMenu = params.showInMenu ?? true;
+        this.showInMenu = params.showInMenu ?? false;
         this.minRole = params.minRole;
     }    
 }

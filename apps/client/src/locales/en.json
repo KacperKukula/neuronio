@@ -1,0 +1,20 @@
+{
+    "hello": "Hello from eng",
+    "blocks": {
+        "definitions": "Definitions"
+    },
+    "common": {
+        "add": "Add",
+        "delete": "Delete"
+    },
+    "errors": {
+        "noResponse": "Our servers are temporary unavailable",
+        "invalidCredentials": "Your password or login is incorects"
+    },
+    "salesPages": {
+        "home": {
+            "hero_header": "To learn faster and more effectively, it is necessary to understand how the learning process works itself",
+            "hero_text": "To learn faster and more effectively, it is necessary to understand how the learning process works itself"
+        }
+    }
+}

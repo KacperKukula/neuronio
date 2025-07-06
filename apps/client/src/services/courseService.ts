@@ -2,6 +2,7 @@ import type { Block } from "@/common/models/Block";
 import type { Course } from "@/common/models/Course";
 import type { Module } from "@/common/models/Module";
 import { HttpService } from "@/modules/httpService/httpService";
+import type { User } from "@/stores/userStore/model/User";
 import type { CourseDto, CreateCourseDto } from "shared";
 
 class CourseService extends HttpService {

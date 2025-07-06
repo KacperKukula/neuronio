@@ -24,9 +24,8 @@ export class Block {
     data: string;
 
     @Column({
-        type: "enum",
-        enum: BlockType,
-        nullable: false
+        nullable: false,
+        default: 'text'
     })
     type: string;
 

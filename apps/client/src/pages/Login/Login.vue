@@ -17,10 +17,12 @@
                         <Password v-model="loginForm.password" :feedback="false" placeholder="Password" class="w-full" inputClass="w-full"/>
                     </FormField>
 
-                    <Button type="submit" severity="secondary" label="Submit" />
+                    <Button type="submit" :loading="inProgress" severity="secondary" label="Submit" />
                 </Form>
 
-                <Message v-if="serverErr" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
+                <div class="flex flex-col gap-2 w-full">
+                    <Message v-if="serverErr?.message" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
+                </div>
 
                 <router-link to="/register">Register now</router-link>
             </div>
@@ -42,6 +44,8 @@ import SimpleButton from "@/components/SimpleButton/SimpleButton.vue";
 import SimpleTile from '@/components/SimpleTile/SimpleTile.vue';
 import SimpleInput from '@/components/Simple/Input/SimpleInput.vue';
 import { Utils } from "@/lib";
+import CommonPathsConst from "@/router/CommonPathsConst";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: 'Login',
@@ -49,13 +53,18 @@ export default defineComponent({
         RouterLink, SimpleTile, SimpleInput, SimpleButton
     },
     setup() {
-        const userStore = useUserStore();
+        const { t } = useI18n();
         const router = useRouter();
+        const userStore = useUserStore();
 
         const loginForm = ref(new LoginDto())
         const serverErr = ref<Error>()
+        const inProgress = ref<boolean>(false)
 
         const loginUser = async () => {
+            processing() // Setting the req is in progress
+            serverErr.value = undefined;
+
             const loginDto = plainToInstance(LoginDto, loginForm.value);
             const valErrors = await validate(loginDto);
             if(valErrors.length)
@@ -63,14 +72,21 @@ export default defineComponent({
 
             const { error, data } = await Utils.catchNetworkError( userStore.login(loginDto) )
 
-            if (error) {
-                console.log('💘 Login error:', error);
+            data && router.push(CommonPathsConst.COURSES);
 
-                return serverErr.value = await error.response.json();
-            }
+            if(!error) return; 
 
-            router.push('/dashboard');
+            if (error.response?.status === 401) {
+                serverErr.value = new Error(t('errors.invalidCredentials'))
+                return done()
+            };
+
+            serverErr.value = new Error(t('errors.noResponse'))
+            done()
         };
+
+        const processing = () => inProgress.value = true
+        const done = () => inProgress.value = false
 
         return {
             // User
@@ -79,7 +95,8 @@ export default defineComponent({
             // Actions
             loginUser,
 
-            serverErr
+            serverErr,
+            inProgress
         }
     }
 })

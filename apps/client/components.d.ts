@@ -33,6 +33,7 @@ declare module 'vue' {
     RadarLoader: typeof import('./src/components/Loaders/RadarLoader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Select: typeof import('primevue/select')['default']
     SimpleButton: typeof import('./src/components/SimpleButton/SimpleButton.vue')['default']
     SimpleInput: typeof import('./src/components/Simple/Input/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']

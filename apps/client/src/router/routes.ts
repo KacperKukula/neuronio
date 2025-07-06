@@ -4,15 +4,15 @@ import { requireAuth } from '@/router/guards';
 import { globalRoutes } from './routes/globalRoutes';
 import CommonPathsConst from './CommonPathsConst';
 import { EnumUserRole } from '@/common/enums/EnumUserRolels';
+import { userRoutes } from './routes/userRoutes';
 
 export const routes = [
 
     /* Global routes such as Login, Dashboard */
-    ...globalRoutes.map(route => {
-        route.showInMenu = false; // Hide global routes from the main menu,
+    ...globalRoutes,
 
-        return route;
-    }),
+    /* USER ROUTES */
+    ...userRoutes,
 
     /* SALES PAGES */
     new Route({
@@ -40,12 +40,6 @@ export const routes = [
         component: () => import('@/pages/Dashboard/Dashboard.vue'),
         beforeEnter: requireAuth,
     }),
-    new Route({
-        name: 'profile',
-        path: '/profile',
-        component: () => import('@/pages/User/Profile.vue'),
-        beforeEnter: requireAuth,
-    }),
 
     /* COURSES */
     new Route({
@@ -60,22 +54,33 @@ export const routes = [
     new Route({
         name: 'courses-view',
         path: '/courses/view/:id',
-        showInMenu: false,
         minRole: EnumUserRole.STUDENT,
-        component: () => import("@/pages/Courses/Actions/View/CourseView.vue"),
+        component: () => import("@/pages/Courses/~Actions/View/CourseView.vue"),
     }),
     new Route({
         name: 'courses-edit',
         path: '/courses/edit/:id',
-        showInMenu: false,
-         minRole: EnumUserRole.TEACHER,
-        component: () => import("@/pages/Courses/Actions/Edit/CourseEdit.vue"),
+        minRole: EnumUserRole.TEACHER,
+        component: () => import("@/pages/Courses/~Actions/Edit/CourseEdit.vue"),
+    }),
+    new Route({
+        name: 'courses-participants',
+        path: '/courses/participants/:id',
+        minRole: EnumUserRole.TEACHER,
+        component: () => import("@/pages/Courses/~Actions/Participants/Participants.vue"),
+    }),
+    new Route({
+        label: 'Definitions',
+        name: 'course-definitions',
+        path: '/courses/:id/definitions',
+        minRole: EnumUserRole.TEACHER,
+        component: () => import('@/pages/Courses/~Actions/Definitions/Definitions.vue'),
     }),
     new Route({
         label: 'Create',
         name: 'course-create',
         path: '/create-course',
         minRole: EnumUserRole.TEACHER,
-        component: () => import('@/pages/Courses/Actions/Create/CourseCreate.vue'),
-    })
+        component: () => import('@/pages/Courses/~Actions/Create/CourseCreate.vue'),
+    }),
 ]

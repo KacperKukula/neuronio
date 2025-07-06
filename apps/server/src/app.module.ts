@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from '@modules/auth/auth.module';
 import { AuthGuard } from '@/guards/auth.guard';
 import { BlocksModule } from './modules/blocks/blocks.module';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { BlocksModule } from './modules/blocks/blocks.module';
     UserModule,
     CoursesModule,
     AuthModule,
-    BlocksModule
+    BlocksModule,
+    KnowledgeModule
   ],
   controllers: [AppController],
   providers: [

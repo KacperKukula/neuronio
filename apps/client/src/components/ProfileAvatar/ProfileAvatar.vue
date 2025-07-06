@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import Avatar from 'primevue/avatar'; 
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 
 defineProps({
@@ -18,7 +19,7 @@ defineProps({
 
 <style scoped lang="scss">
 .profileAvatar {
-    width: 2.5rem;
+    max-width: 2.5rem;
     padding: .2rem;
     aspect-ratio: 1/1;
     border-radius: 50%;

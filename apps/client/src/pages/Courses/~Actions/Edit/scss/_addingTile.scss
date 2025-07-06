@@ -1,0 +1,7 @@
+@use '@/assets/scss/_variables.scss' as *;
+
+.addingTile {
+    border-radius: $borderLarge;
+    border: 2px solid $primaryGreen;
+    background-color: #2d2d30;
+}

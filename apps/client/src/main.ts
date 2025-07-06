@@ -17,10 +17,12 @@ import '@/main.ts'
 
 /* CINFIGS */
 import PrimeConf from '@/conf/prime.config'
+import '@/primevue.scss';
 
 /* STYLES */
 import './style.scss'
 import './style.css'
+import { i18n } from "./conf/i18n.config";
 
 const pinia = createPinia()
 const router = createRouter({
@@ -29,6 +31,7 @@ const router = createRouter({
 })
 
 createApp(App)
+    .use(i18n)
     .use(pinia)
     .use(router)
     .use(PrimeVue, PrimeConf)

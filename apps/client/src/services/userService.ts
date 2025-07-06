@@ -2,6 +2,7 @@ import ky from "ky";
 import { HttpService } from "@/modules/httpService/httpService";
 import type { User } from "@/stores/userStore/model/User";
 import type { UpdateUserProfileDto } from "shared";
+import type { UpdateUserPreferencesDto } from "shared";
 
 class UserService extends HttpService {
 
@@ -29,6 +30,11 @@ class UserService extends HttpService {
 
     async uploadAvatar(formData: FormData) {
         return await this.authorizedReq(false).post('users/avatar', { body: formData }).text();
+    }
+
+    /* USER PREFERENCES */
+    async sentUserPreferences(userPrefs: UpdateUserPreferencesDto) {
+        return await this.authorizedReq(false).patch('users/preferences', { json: userPrefs });
     }
 }
 

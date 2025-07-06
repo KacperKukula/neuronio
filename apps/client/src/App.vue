@@ -8,7 +8,7 @@
     <suspense timeout="0">
       <!-- Default -->
       <template #default>
-        <component :is="Component" />
+        <component :is="Component" :key="viewKey" @reload="reload" />
       </template>
 
       <!-- Loading -->
@@ -32,6 +32,10 @@ import RadarLoader from '@/components/Loaders/RadarLoader.vue';
 const userStore = useUserStore()
 const isLoading = ref(true);
 
+const viewKey = ref(0);
+
+const reload = () => viewKey.value++
+
 onMounted(async () => {
   userStore.loadUser()
   
@@ -51,9 +55,5 @@ onMounted(async () => {
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
-}
-
-main {
-  padding-top: calc($navBarHeight + .3rem);
 }
 </style>

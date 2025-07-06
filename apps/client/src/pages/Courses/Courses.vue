@@ -1,11 +1,11 @@
 <template>
     <section class="courses">
-        <NoCourses v-if="courses.length === 0" />
+        <NoCourses v-if="!courses" />
         
         <template v-else>
             <h2 class="mb-6">Twoje kursy</h2>
 
-            <DataView :value="courses">
+            <DataView :value="courses" :background="'transparent'">
                 <template #list="slotProps">
 
                     <!--COURSE TILE-->
@@ -18,7 +18,7 @@
 
                             <div :class="'courseTile__content'" class="p-5">
                                 <h3>{{ item.name }}</h3>
-                                <p class="text-surface-500 dark:text-surface-400">{{ Utils.sanitize(item.description) }}</p>
+                                <p v-html="Utils.sanitize(item.description)" class="text-surface-500 dark:text-surface-400"></p>
                                 <CourseSupport :courseId="item.id"/>
                             </div>
                         </div>
@@ -32,31 +32,37 @@
 
 <script setup lang="ts">
 import { useCourseStore } from '@/stores/course/store';
-import { useRouter } from 'vue-router';
 import { Utils } from '@/utils';
+import { UploadManager } from '@/modules/upload/uploadMngr';
 import CourseSupport from './components/CourseSupport.vue';
 import NoCourses from './components/NoCourses.vue';
-import { UploadManager } from '@/modules/upload/uploadMngr';
+import { onMounted, ref } from 'vue';
+import type { Course } from '@/common/models/Course';
 
 const DEFAULT_IMG_SOURCE = '/imgs/no-image.png';
 
 const courseStore = useCourseStore()
-const router = useRouter();
 
-const courses = await courseStore.retriveCourses();
+const courses = ref<Course[]|null>()
+
+onMounted(async () => {
+    courses.value = await courseStore.retriveCourses();
+})
 </script>
 
 <style lang="scss" scoped>
+
 section.courses {
-    width: min(100%, 1200px);
+    width: min(100%, 1400px);
     margin: 0 auto;
+    padding: 0 0 4rem;
 }
 
 .courseTile {
 
     display: grid;
     grid-template-columns: 2fr 6fr;
-    height: 15rem;
+    height: 16rem;
     gap: 2.6rem;
 
     &__img {

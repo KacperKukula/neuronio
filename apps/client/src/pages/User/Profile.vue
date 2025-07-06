@@ -11,34 +11,39 @@
                         class="w-full h-full group flex items-center justify-center shrink-1 rounded-full cursor-pointer"
                         style="background-color: black;">
 
-                        <BlobCross v-if="isUserPhotoLoading" />
-                        <template v-else>
-                            <CameraIcon v-if="!userPhoto" class="h-2/4 w-2/4 group-hover:scale-85 transition-transform ease-out" />
-                            <img v-if="userPhoto" :src="userPhoto" class="w-full h-full object-cover rounded-full" />
-                            <input name="fileUpload" type="file" accept="image/*" class="hidden" @change="onSelectedFiles" />
-                        </template>
+                        <CameraIcon v-if="!userPhoto" class="h-2/4 w-2/4 group-hover:scale-85 transition-transform ease-out" />
+                        <img v-else :src="userPhoto" class="w-full h-full object-cover rounded-full" />
+                        <input name="fileUpload" type="file" accept="image/*" class="hidden" @change="onSelectedFiles" />
                     </label>
-
-                    <skeleton-photo :srcPromise="userService.getUserPhoto()" />
                 </div>
             </div>
             <div class="profile__credentials">
-                <Form v-slot="$form" @submit="sendForm">
-                    <div class="flex">
+                <Form v-slot="$form" @submit="sendProfileForm">
+                    <div class="flex gap-4 my-4">
                         <FormField v-slot="$field" name="name" initialValue="" class="w-1/2">
-                            <h4>Name</h4>
+                            <h4 class="mb-2">Name</h4>
                             <InputText v-model="userProfileForm.name" name="name" type="text" placeholder="Name" fluid class="w-1/2" :disabled="contentLoading"/>
                             <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
                         </FormField>
 
                         <FormField v-slot="$field" name="surname" initialValue="" class="w-1/2">
-                            <h4>Surname</h4>
+                            <h4 class="mb-2">Surname</h4>
                             <InputText v-model="userProfileForm.surname" name="surname" type="text" placeholder="Surname" fluid class="w-1/2" :disabled="contentLoading"/>
                             <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
                         </FormField>
+
                     </div>
 
-                    <Button type="submit" class="mt-4" :disabled="contentLoading">
+                    <h2 class="mb-2">Bio</h2>
+                    <Editor v-model="userProfileForm.bio" class="mb-3" editorStyle="height: 320px" />
+                    
+                    <FormField v-slot="$field" name="Position" initialValue="" class="w-full">
+                        <h4 class="mb-2">Position</h4>
+                        <InputText v-model="userProfileForm.position" name="surname" type="text" placeholder="Surname" fluid class="w-1/2" :disabled="contentLoading"/>
+                        <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
+                    </FormField>
+
+                    <Button type="submit" :disabled="contentLoading">
                         <template #default>
                             <span>Save</span>
                         </template>
@@ -57,17 +62,17 @@ import { userService } from '@/services/userService'
 import { useUserStore } from '@/stores/userStore/UserStore';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { UserProfileForm } from './model/UserProfileForm';
-
-import FileUpload from 'primevue/fileupload';;
-import SkeletonPhoto from '@/components/SkeletonLoaded/SkeletonPhoto.vue';
 import { UpdateUserProfileDto } from 'shared';
-import BlobCross from '@/components/Loaders/BlobCross.vue';
 import { UploadManager } from '@/modules/upload/uploadMngr';
+
+const emit = defineEmits(['reload'])
+
+const userStore = useUserStore()
 
 const contentLoading = ref(true);
 
-const userPhoto = ref<string|null>(null)
-const isUserPhotoLoading = ref<boolean>(true) 
+const userPhoto = ref<string|null>(userStore.getUserAvatar)
+const isUserPhotoLoading = ref<boolean>(true)
 
 const userProfileForm = ref<UserProfileForm>(new UserProfileForm());
 
@@ -76,10 +81,11 @@ const onSelectedFiles = async (e) => {
 
     if (files && files.length > 0) {
         userPhoto.value = await UploadManager.uploadAvatar(files[0])
+        emit('reload')
     }
 }
 
-const sendForm = async () => {
+const sendProfileForm = async () => {
     contentLoading.value = true;
     
     const userProfileDto = plainToInstance(UpdateUserProfileDto, userProfileForm.value)
@@ -88,16 +94,7 @@ const sendForm = async () => {
     contentLoading.value = false;
 };
 
-const getUserPhoto = async () => {
-    if( !isUserPhotoLoading.value ) return;
-
-    userPhoto.value = await userService.getUserPhoto();
-
-    isUserPhotoLoading.value = false;
-}
-
 onMounted(async () => {
-    getUserPhoto()
 
     const userProfileResp = await userService.getUserProfile();
 
@@ -116,9 +113,10 @@ onMounted(async () => {
     justify-content: center;
 
     &__content {
+        gap: 2.6rem;
         display: grid;
         grid-template-columns: 1fr 3fr;
-        width: min(1600px, 100%);
+        width: min(1300px, 100%);
     }
 
     &__photo {

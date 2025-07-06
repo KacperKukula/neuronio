@@ -8,6 +8,7 @@ import { Utils } from '@/utils'
 import { useRouter } from 'vue-router'
 import type { LoginDto } from 'shared'
 import { AuthModule } from '@/modules/auth/authModule'
+import { UploadManager } from '@/modules/upload/uploadMngr'
 
 const USERSTORE_NAME = 'userStore'
 
@@ -35,14 +36,10 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
             const user = await AuthModule.getInstance().login(loginDto)
 
             this.user = user;
-
             return user;
         },
         logout() {
-            const router = useRouter()
-
             this.clearUserData()
-            router.push('/login')
         },
         clearUserData() {
             this.user = null;
@@ -55,13 +52,12 @@ export const useUserStore = defineStore(USERSTORE_NAME, {
          * @returns 
          */
         isLoggedIn(): boolean { return !!this.user },
-
         /**
-         * Returns the user object if logged in, otherwise null.
-         * @returns User | null
+         * Gets user url photo
+         * @returns 
          */
-        getUser(): User | null {
-            return this.user
+        getUserAvatar(): string|null {
+            return this.user?.photoUrl ? UploadManager.pathToUrl(this.user.photoUrl + `?t=${Date.now()}`) : null;
         }
     },
 })

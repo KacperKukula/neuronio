@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/entities/user/user.entity';
 import { UserProfile } from '@/entities/user/userProfile.entity';
+import { UpdateUserPreferencesDto } from 'shared';
+import { UserPreference } from '@/entities/user/user.preference.entity';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(UserProfile) private userProfileRepository: Repository<UserProfile>,
+        @InjectRepository(UserPreference) private userPreferenceRepository: Repository<UserPreference>
     ) {}
 
     findAll(): Promise<User[]> {
@@ -37,7 +40,7 @@ export class UserService {
 
     async searchForUsers(searchPhrase: string): Promise<User[]> {
         return this.userRepository.createQueryBuilder('user')
-            .select(['user.id', 'user.name', 'user.email'])
+            .select(['user.id', 'user.name', 'user.email', 'user.photoUrl'])
             .where('user.name LIKE :searchPhrase', { searchPhrase: `%${searchPhrase}%` })
             .orWhere('user.email LIKE :searchPhrase', { searchPhrase: `%${searchPhrase}%` })
             .getMany();
@@ -84,5 +87,9 @@ export class UserService {
 
         await this.userRepository.update(userId, { photoUrl });
         return photoUrl;
+    }
+
+    async savePreference(userId: number, userPref: UpdateUserPreferencesDto) {
+        return this.userPreferenceRepository.save({ userId, ...userPref })
     }
 }

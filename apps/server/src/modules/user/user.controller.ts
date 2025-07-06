@@ -9,13 +9,14 @@ import {
     Controller,
     UploadedFile,
     UseInterceptors,
+    Patch,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
 import { User } from '@/entities/user/user.entity';
 import { AuthGuard } from '@/guards/auth.guard';
 import { UserProfile } from '@/entities/user/userProfile.entity';
-import { UpdateUserProfileDto } from 'shared';
+import { UpdateUserPreferencesDto, UpdateUserProfileDto } from 'shared';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
@@ -59,13 +60,11 @@ export class UserController {
 
     @Post('userPhoto')
     async getUserPhoto(@Req() req: Request): Promise<string> {
-        //@ts-ignore
         return await this.userService.getUserPhoto(req.user.userId)
     }
 
     @Post('profile')
     async getUserProfile(@Req() req: Request): Promise<UserProfile | null> {
-        //@ts-ignore
         return await this.userService.findProfileById(req.user.userId)
     }
 
@@ -90,5 +89,12 @@ export class UserController {
     }))
     async uploadAvatar(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
         return this.userService.uploadAvatar(file, req.user.userId);
+    }
+
+    /* PREFERENCES */
+    @Patch('preferences')
+    async patchPreferences(@Req() req: Request, @Body() dto: UpdateUserPreferencesDto) {
+        if (!dto || Object.keys(dto).length === 0) throw new Error('Preferences data is required');
+        return await this.userService.savePreference(req.user.userId, dto);
     }
 }

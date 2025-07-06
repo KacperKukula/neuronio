@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { Course } from '@/entities/courses/course.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -49,6 +49,29 @@ export class CoursesController {
         @Req() req: Request
     ): Promise<Block[]> {
         return await this.coursesService.getCourseBlocks(id);
+    }
+
+    @Get('participants/:id')
+    async getCourseParticipants(
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return await this.coursesService.getCourseParticipants(id);
+    }
+
+    @Put('participants/:id')
+    async addParticipant(
+        @Param('id', ParseIntPipe) id: number,
+        @Body('userId', ParseIntPipe) userId: number,
+    ) {
+        return await this.coursesService.addParticipant(id, userId);
+    }
+
+    @Delete('participants/:id')
+    async removeParticipant(
+        @Param('id', ParseIntPipe) id: number,
+        @Body('userId', ParseIntPipe) userId: number,
+    ) {
+        return await this.coursesService.removeParticipant(id, userId);
     }
 
     /* UPLOAD */
