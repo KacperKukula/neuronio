@@ -5,7 +5,7 @@
 
   <AlertArea />
 
-  <main class="z-1">
+  <main :class="'page-view'" class="py-5 px-4 mx-auto">
     <router-view v-slot="{ Component }">
       <suspense timeout="0">
         <!-- Default -->
@@ -55,20 +55,5 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-
-main {
-  min-height: calc(100svh - $footerHeight);
-}
+.page-view { margin-top: $navBarHeight; }
 </style>

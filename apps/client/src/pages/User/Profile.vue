@@ -108,7 +108,6 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .profile {
-    margin-top: 2rem;
     display: flex;
     justify-content: center;
 

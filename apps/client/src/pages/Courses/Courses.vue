@@ -52,8 +52,6 @@ onMounted(async () => courses.value = await courseStore.retriveCourses())
 
 section.courses {
     width: min(100%, 1400px);
-    margin: 0 auto;
-    padding: 4.6rem 1.2rem;
 }
 
 .courseTile {

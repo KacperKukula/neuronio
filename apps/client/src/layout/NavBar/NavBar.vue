@@ -1,5 +1,5 @@
 <template>
-    <Menubar id="navbar" :model="items" class="fixed t-0 w-full">
+    <Menubar :class="'navbar'" :model="items" class="fixed t-0 w-full">
 
         <!--LEFT SIDE-->
         <template #start>
@@ -48,7 +48,7 @@ const items = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-nav {
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
