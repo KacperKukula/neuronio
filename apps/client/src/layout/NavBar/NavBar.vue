@@ -35,7 +35,7 @@ import { navRouteFactory } from '@/factories/NavRouteFactory';
 import { useUserStore } from '@/stores/userStore/UserStore';
 import { EnumUserRole, mapRoleKeyToVal } from '@/common/enums/EnumUserRolels';
 import ProfileMenu from './ProfileMenu.vue';
-import Logo from './Logo.vue';
+import Logo from '@/components/Logo/Logo.vue';
 
 const userStore = useUserStore();
 
@@ -53,7 +53,6 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -103,13 +103,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
-.login {
+section.login {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100svh;
+    height: calc(100svh - $footerHeight);
+}
 
+.login {
     &--background {
         z-index: -1;
         position: absolute;

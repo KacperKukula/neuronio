@@ -1,6 +1,6 @@
 <template>
-    <section :class="'participants'">
-        <div class="flex flex-col gap-4 mb-4">
+    <section :class="'participants'" class="nav-top-padding">
+        <div class="flex flex-col gap-4 m-4">
             <h4>Add participants</h4>
             <InputText type="text" v-model="searchPhrase" />
             <div class="border-1 border-solid border-white rounded-md px-4 py-3">

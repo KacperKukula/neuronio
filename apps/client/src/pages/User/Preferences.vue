@@ -1,10 +1,12 @@
 <template>
-    <h1 class="mb-4">{{ $t('hello') }}</h1>
-
-    <div class="flex gap-3">
-        <Select v-model="selectedLang" :options="appLocales" optionLabel="label" placeholder="Select lang" checkmark :highlightOnSelect="false" class="w-full md:w-56" />
-        <Button type="submit" @click="submit">Wyślij</Button>
-    </div>
+    <section class="nav-top-padding px-3">
+        <h1 class="mb-4 pt-6">{{ $t('hello') }}</h1>
+    
+        <div class="flex gap-3">
+            <Select v-model="selectedLang" :options="appLocales" optionLabel="label" placeholder="Select lang" checkmark :highlightOnSelect="false" class="w-full md:w-56" />
+            <Button type="submit" @click="submit">Wyślij</Button>
+        </div>
+    </section>
 </template>
 
 <script setup lang="ts">

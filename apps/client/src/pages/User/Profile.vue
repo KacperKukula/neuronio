@@ -1,6 +1,6 @@
 <template>
-    <section class="profile">
-        <div class="profile__content">
+    <section :class="'profile'" class="nav-top-padding">
+        <div :class="'profile__content'" class="pt-8">
 
             <div class="profile__photo">
                 

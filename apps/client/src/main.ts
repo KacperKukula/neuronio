@@ -21,7 +21,7 @@ import '@/primevue.scss';
 
 /* STYLES */
 import './style.scss'
-import './style.css'
+import './style.css' // For Tailwind CSS
 import { i18n } from "./conf/i18n.config";
 
 const pinia = createPinia()

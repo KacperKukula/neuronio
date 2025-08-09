@@ -28,7 +28,7 @@ export const useCourseStore = defineStore(COURSESTORE_NAME, {
             const coursesArr = await courseService.getUserCourses()
             this.courses = new Map(coursesArr.map(course => [course.id, course]));
 
-            return this.courses;
+            return coursesArr;
         },
         async retriveCourse(courseId: number) {
             if(this.courses.has(courseId)) return this.courses.get(courseId);

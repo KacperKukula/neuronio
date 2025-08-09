@@ -1,25 +1,30 @@
 <template>
-    <div class="flex flex-col">
+    <div :class="'formated-text'" class="flex flex-col">
         <p v-html="Utils.sanitize(data.text)"></p>
         
-        <div v-if="!active" class="w-full flex justify-center p-8 bg-stone-700">
+        <div v-if="!active" :class="'defs-tile defs-tile--nonactive'" class="w-full flex justify-center p-8 bg-stone-700">
             <Button label="Activate definitions" @click="activateModule" />
         </div>
         
-        <div v-else class="p-6 bg-stone-700">
+        <div v-else :class="'defs-tile defs-tile--active'" class="bg-stone-700">
 
-            <template v-if="!runEnd">
-                <div v-if="!show" class="aspect-square h-52 bg-red-800" @click="show = true">
-                    {{ activeDef?.keyword }}
-                </div>
-                <div v-else class="aspect-square h-52 bg-blue-800" @click="show = false">
-                    {{ activeDef?.definition }}
+            <!--ACTIVE RUN-->
+            <template v-if="!runEnded">
+                <div class="flex justify-center py-8">
+                    <DefCard :front="activeDef?.keyword" :back="activeDef?.definition" />
                 </div>
     
-                <span>{{ `Debug: counter ${counter}` }}</span>
-                <Button label="Next" @click="nextDefinition" />
+                <div class="w-full grid grid-cols-2">
+                    <button :class="['answerButton', 'answerButton--positive']" class="place-items-center py-4" @click="nextDefinition(true)">
+                        {{ $t('modules.definitions.answerPositive') }}
+                    </button>
+                    <button :class="['answerButton', 'answerButton--negative']" class="place-items-center py-4" @click="nextDefinition(false)">
+                        {{ $t('modules.definitions.answerNegative') }}
+                    </button>
+                </div>
             </template>
 
+            <!--RUN ENDED, STATS-->
             <template v-else>
                 <h2>KONIEC</h2>
             </template>
@@ -34,15 +39,18 @@ import { Utils } from '@/utils';
 import { Definition } from '@/common/models/Definition';
 import { knowledgeService } from '@/services/knowledgeService';
 
+import DefCard from './components/DefCard.vue';
+import Stats from './data/Stats';
+
 const active = ref<boolean>(false)
-const definitions = ref<Definition[]>()
+const randomizedDefs = ref<Definition[]>()
 
 // Definitions active
 const activeDef = ref<Definition>()
-const runEnd = ref<boolean>(false)
-let counter = 0;
-let score = 0;
+const runEnded = ref<boolean>(false)
+const run = ref<Stats>()
 
+/* Show reverse of the card */
 const show = ref<boolean>(false)
 
 const props = defineProps<{
@@ -54,17 +62,24 @@ const activateModule = async () => {
 
     const rawDefs = await knowledgeService.getDefinitions(props.data.definitions)
     
-    definitions.value = randomizePosition(rawDefs);
-    activeDef.value = definitions.value[0];
-    
+    randomizedDefs.value = randomizePosition(rawDefs);
+    activeDef.value = randomizedDefs.value[0];
+
+    // Set up new run
+    run.value = new Stats();    
+    run.value.endAt = randomizedDefs.value.length;
+
     active.value = true;
 }
 
-const nextDefinition = () => {
-    if(++counter >= definitions.value?.length) return runEnd.value = true;
-    
-    show.value = false;
-    activeDef.value = definitions.value[counter]
+const nextDefinition = (scored: boolean) => {
+    if ( !run.value ) return console.error('💀 Run is null')
+
+    if( scored ) run.value.score++
+
+    if( run.value.isEnd() ) return (runEnded.value = true)
+
+    activeDef.value = randomizedDefs.value?.[++run.value.counter]   
 }
 
 const randomizePosition = (defArr: Definition[]) => {
@@ -78,4 +93,18 @@ const randomizePosition = (defArr: Definition[]) => {
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/_coursesVars.scss' as *;
+@use './scss/tileStyle.scss';
+
+.answerButton {
+    cursor: pointer;
+
+    &--positive {
+        &:hover { background-color: $moduleGoNext; }
+    }
+
+    &--negative {
+        &:hover { background-color: $moduleGoBack; }
+    }
+}
 </style>

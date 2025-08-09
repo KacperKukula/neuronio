@@ -1,5 +1,5 @@
 <template>
-    <section class="courses">
+    <section :class="'courses'" class="nav-top-padding">
         <NoCourses v-if="!courses" />
         
         <template v-else>
@@ -45,9 +45,7 @@ const courseStore = useCourseStore()
 
 const courses = ref<Course[]|null>()
 
-onMounted(async () => {
-    courses.value = await courseStore.retriveCourses();
-})
+onMounted(async () => courses.value = await courseStore.retriveCourses())
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +53,7 @@ onMounted(async () => {
 section.courses {
     width: min(100%, 1400px);
     margin: 0 auto;
-    padding: 0 0 4rem;
+    padding: 4.6rem 1.2rem;
 }
 
 .courseTile {

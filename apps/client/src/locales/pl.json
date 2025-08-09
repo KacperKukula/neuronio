@@ -5,16 +5,27 @@
     },
     "common": {
         "add": "Dodaj",
+        "back": "Wróć",
         "delete": "Usuń"
     },
     "errors": {
         "noResponse": "Nasze serwery są tymczasowo niedostępne",
         "invalidCredentials": "Login lub hasło nie są poprawne"
     },
+    "menu": {
+        "home": "Strona główna",
+        "about-us": "O nas"
+    },
     "salesPages": {
         "home": {
             "hero_header": "Aby uczyć się szybciej i skuteczniej, najpierw trzeba zrozumieć, jak działa sam proces uczenia się",
             "hero_text": "First e-learning platform to focus on the needs of the younger generation"
+        }
+    },
+    "modules": {
+        "definitions": {
+            "answerPositive": "Got it!",
+            "answerNegative": "Don't know..."
         }
     }
 }

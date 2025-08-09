@@ -3,18 +3,33 @@
     "blocks": {
         "definitions": "Definitions"
     },
+    "courses": {
+        "deleteBlockHeader": "Usuwanie bloku",
+        "deleteBlockContent": "Czy na pewno chcesz usunąć ten blok?"
+    },
     "common": {
         "add": "Add",
+        "back": "Back",
         "delete": "Delete"
     },
     "errors": {
         "noResponse": "Our servers are temporary unavailable",
         "invalidCredentials": "Your password or login is incorects"
     },
+    "menu": {
+        "home": "Home",
+        "about-us": "About us"
+    },
     "salesPages": {
         "home": {
             "hero_header": "To learn faster and more effectively, it is necessary to understand how the learning process works itself",
             "hero_text": "To learn faster and more effectively, it is necessary to understand how the learning process works itself"
+        }
+    },
+    "modules": {
+        "definitions": {
+            "answerPositive": "Umiem!",
+            "answerNegative": "Nie umiem..."
         }
     }
 }

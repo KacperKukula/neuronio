@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full flex justify-center">
+    <section class="nav-top-padding w-full flex justify-center">
         <div v-if="!course">
             <p>Loading course...</p>
         </div>
@@ -43,7 +43,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Block } from '@/common/models/Block';
 
-import BlockRenderer from '../../Blocks/BlockRenderer.vue';
+import BlockRenderer from '../../~Blocks/BlockRenderer.vue';
 import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
 import { userService } from '@/services/userService';
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col">
+    <div :class="'formated-text'" class="flex flex-col">
         <h3>{{ props.block.name }}</h3>
 
         <section class="component-zone">

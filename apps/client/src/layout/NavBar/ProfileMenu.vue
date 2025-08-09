@@ -6,10 +6,11 @@
         </template>
 
         <template v-else>
+            <span>{{ userStore.user?.email }}</span>
             <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="flagMenuShow"></Menu>
         </template>
 
-        <div class="profile__userPhoto" @click="flagMenuShow = !flagMenuShow">
+        <div class="profile__userPhoto" @click="toggleFlagMenu()">
 
             <!--@error="e => console.log('IMG ERROR', e, userStore.user?.photoUrl)"-->
             <img v-if="userStore.user?.photoUrl" :src="UploadManager.pathToUrl(userStore.user?.photoUrl)" 
@@ -36,13 +37,15 @@ import { ref } from 'vue';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 
-import { useUserStore } from '@/stores/userStore/UserStore';
 import type { MenuItem } from 'primevue/menuitem';
+import { useUserStore } from '@/stores/userStore/UserStore';
 import { UploadManager } from '@/modules/upload/uploadMngr';
+import { useClickInterceptor, Interception } from '@/modules/interceptor/ClickInterceptor';
 import CommonPathsConst from '@/router/CommonPathsConst';
 
 const router = useRouter()
 const userStore = useUserStore()
+const clickInterc = useClickInterceptor()
 
 const menuItems: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-user', command: () => { router.push('/profile') } },
@@ -54,6 +57,13 @@ const menuItems: MenuItem[] = [
     },
 ]
 const flagMenuShow = ref(false);
+
+const toggleFlagMenu = () => {
+    if(flagMenuShow) clickInterc.interceptOnce(new Interception(() => flagMenuShow.value = false))
+
+    flagMenuShow.value = !flagMenuShow.value
+
+}
 
 const loginUser = async () => {
     router.push('/login')

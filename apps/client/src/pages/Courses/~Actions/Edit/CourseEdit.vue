@@ -1,5 +1,5 @@
  <template>
-    <section class="w-full flex justify-center">
+    <section class="nav-top-padding w-full flex justify-center">
         <div v-if="!course">
             <p>Loading course...</p>
         </div>
@@ -50,7 +50,7 @@
                         <!--BLOCKS - SUPPORT-->
                         <div class="blockArea--support">
                             <Button icon="pi pi-pencil" rounded variant="outlined" severity="info" aria-label="User" @click="editAction()" />
-                            <Button icon="pi pi-trash" rounded variant="outlined" severity="danger" aria-label="User" />
+                            <Button icon="pi pi-trash" rounded variant="outlined" severity="danger" aria-label="User" @click="deleteBlockId = " />
                         </div>
                         <BlockRenderer :block="block" />
                     </div>
@@ -83,6 +83,15 @@
             </teleport>
         </div>
     </section>
+
+    <!--DIALOGS-->
+    <Dialog v-model:visible="!!deleteBlockId" modal :header="$t('courses.deleteBlockHeader')" :style="{ width: '25rem' }">
+        <p>{{ $t('courses.deleteBlockContent') }}</p>
+        <div class="flex gap-3 mt-6">
+            <Button :label="$t('common.delete')" icon="pi pi-trash" variant="outlined" severity="danger" iconPos="right" @click="deleteBlock()" />
+            <Button :label="$t('common.back')" icon="pi pi-undo" variant="outlined" severity="contrast" iconPos="right" @click="deleteBlockId = null" />
+        </div>
+    </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -101,6 +110,7 @@ import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
 import type { Block } from '@/common/models/Block';
 import BlockRenderer from '../../~Blocks/BlockRenderer.vue';
 import AddBlock from './components/AddBlock.vue';
+import Dialog from 'primevue/dialog';
 
 const router = useRouter()
 const route = useRoute()
@@ -118,6 +128,8 @@ const isAddingOnEnd = ref<null|boolean>(false)
 
 const newModule = ref<null|Module>(null);
 const courseBckg = ref<null|string>();
+
+const deleteBlockId = ref<null|number>(null)
 
 const createNewModule = (type: ModuleType) => {
     if(!type) {

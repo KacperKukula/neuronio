@@ -1,15 +1,22 @@
 <template>
-    <section class="px-4">
-        <div :class="'definition-view'" v-for="def in definitions" class="flex items-center gap-4 p-4">
-            <p>{{ def.keyword }}</p>
+    <section class="px-4 nav-top-padding">
 
-            <div v-html="Utils.sanitize(def.definition)" />
-
-            <div :class="'definition-view__support'" class="flex gap-2 align-items">
-                <Button icon="pi pi-pencil" severity="help" size="small" variant="outlined" rounded aria-label="Cancel" />
-                <Button icon="pi pi-times" severity="danger" size="small" variant="outlined" rounded aria-label="Cancel" @click="deleteDef(def.id)" />
-            </div>
-        </div>
+        <DataTable class="py-12" :value="definitions" tableStyle="min-width: 50rem">
+            <Column field="keyword" header="Keyword" style="width: 20%"></Column>
+            <Column header="Definition">
+                <template #body="slotProps">
+                    <div v-html="Utils.sanitize(slotProps.data.definition)" />
+                </template>
+            </Column>
+            <Column header="Support" style="width: 20%">
+                <template #body="slotProps">
+                    <div class="flex gap-2 align-items">
+                        <Button icon="pi pi-pencil" severity="help" size="small" variant="outlined" rounded aria-label="Cancel" />
+                        <Button icon="pi pi-times" severity="danger" size="small" variant="outlined" rounded aria-label="Cancel" @click="deleteDef(slotProps.data)" />
+                    </div>
+                </template>
+            </Column>
+        </DataTable>
 
         <definition-add @add="addDefinition" />
     </section>

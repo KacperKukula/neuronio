@@ -1,5 +1,5 @@
 <template>
-    <div class="createCourse my-6">
+    <div :class="'createCourse'" class="my-6 nav-top-padding">
         <h1>Create Course</h1>
         
         <Form v-slot="$form" :initialValues="{}" @submit="onFormSubmit" class="createCourse__form">

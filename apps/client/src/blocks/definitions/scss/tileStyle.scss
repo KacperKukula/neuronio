@@ -1,0 +1,15 @@
+@use '@/assets/scss/_variables.scss' as *;
+@use '@/assets/scss/_coursesVars.scss' as *;
+
+.defs-tile {
+    border-radius: $borderMedium;
+
+    &--nonactive {
+        border: 2px solid $moduleNotActiveBorder;
+        background-color: $moduleActivityBackground;
+    }
+
+    &--active {
+        
+    }
+}

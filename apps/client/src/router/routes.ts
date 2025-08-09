@@ -16,17 +16,17 @@ export const routes = [
 
     /* SALES PAGES */
     new Route({
+        showInMenu: true,
         path: '/',
         label: 'Home',
-        showInMenu: true,
         name: CommonPathsConst.HOME,
         component: () => import('@/pages/SalesPages/Home/Home.vue'),
     }),
     new Route({
+        showInMenu: true,
         label: 'About',
         name: 'about',
         path: '/about',
-        showInMenu: true,
         component: () => import('@/pages/SalesPages/About/About.vue'),
     }),
 
@@ -43,10 +43,10 @@ export const routes = [
 
     /* COURSES */
     new Route({
+        showInMenu: true,
         label: 'Courses',
         name: 'courses',
         path: '/courses',
-        showInMenu: true,
         minRole: EnumUserRole.STUDENT,
         component: () => import("@/pages/Courses/Courses.vue"),
         beforeEnter: requireAuth,
@@ -77,9 +77,11 @@ export const routes = [
         component: () => import('@/pages/Courses/~Actions/Definitions/Definitions.vue'),
     }),
     new Route({
+        showInMenu: true,
         label: 'Create',
         name: 'course-create',
         path: '/create-course',
+        icon: 'pi pi-plus-circle',
         minRole: EnumUserRole.TEACHER,
         component: () => import('@/pages/Courses/~Actions/Create/CourseCreate.vue'),
     }),
