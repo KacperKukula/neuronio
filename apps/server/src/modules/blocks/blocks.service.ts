@@ -22,4 +22,15 @@ export class BlocksService {
     async updateBlockOrder(id: number, order: number): Promise<void> {
         await this.blockRepository.update(id, { order });
     }
+
+    async deleteBlock(id: number) {
+        const blockToRemove = await this.getBlockById(id, ['course'])
+    
+        //TODO: Add order updating
+        this.blockRepository.remove(blockToRemove)
+    }
+
+    private async getBlockById(blockId: number, relations: string[] = []) {
+        return await this.blockRepository.findOne({ where: { id: blockId }, relations })
+    }
 }

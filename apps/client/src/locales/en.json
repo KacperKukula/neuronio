@@ -4,13 +4,15 @@
         "definitions": "Definitions"
     },
     "courses": {
+        "createCourse_header": "Create course",
         "deleteBlockHeader": "Usuwanie bloku",
         "deleteBlockContent": "Czy na pewno chcesz usunąć ten blok?"
     },
     "common": {
         "add": "Add",
         "back": "Back",
-        "delete": "Delete"
+        "delete": "Delete",
+        "suggestion": "Suggestions"
     },
     "errors": {
         "noResponse": "Our servers are temporary unavailable",

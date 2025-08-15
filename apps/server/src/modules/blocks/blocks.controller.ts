@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { BlocksService } from './blocks.service';
 
 @Controller('blocks')
@@ -16,5 +16,10 @@ export class BlocksController {
         @Body('order') order: number
     ): Promise<void> {
         await this.blockService.updateBlockOrder(id, order);
-    } 
+    }
+
+    @Delete(':id')
+    async deleteBlock(@Param('id', ParseIntPipe) id) {
+        await this.blockService.deleteBlock(id)
+    }
 }

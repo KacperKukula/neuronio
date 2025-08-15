@@ -6,22 +6,24 @@ import { useI18n } from "vue-i18n";
 export class ModuleProfile {
     label?: string;
     image?: string;
+    dict?: string;
 
-    constructor(label?: string, image?: string) {
+    constructor(label?: string, image?: string, dict?: string) {
         this.label = label;
         this.image = image;
+        this.dict = dict;
     }
 }
 
 export const ModulesMap = new Map<string, ModuleProfile>([
     [ModuleType.TEXT, new ModuleProfile(
-        'Text Module',  '/mods/text-miniature.png'
+        'Text',  '/mods/text-miniature.png'
     )],
     [ModuleType.VIDEO, new ModuleProfile(
-        'Video Module',  '/mods/video-miniature.png'
+        'Video',  '/mods/video-miniature.png'
     )],
     [ModuleType.DEFINITIONS, new ModuleProfile(
-        'blocks.definitions',  '/mods/text-miniature.png'
+        'Definitions',  '/mods/text-miniature.png', 'blocks.definitions'
     )],
     // ['aaaaa', new ModuleProfile(
     //     'Video Module',  '/mods/video-miniature.png'

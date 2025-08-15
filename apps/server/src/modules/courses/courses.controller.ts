@@ -1,6 +1,14 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
+import {
+    Post, Get, Put, Delete, // Methods decors
+    Body, Req, Query, Param, // Params decors
+    Controller,
+    NotFoundException,
+    ParseIntPipe,
+    UseInterceptors,
+    UploadedFile,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { Course } from '@/entities/courses/course.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -12,11 +20,6 @@ import { Block } from '@/entities/courses/block.entity';
 @Controller('courses')
 export class CoursesController {
     constructor(private readonly coursesService: CoursesService) {}
-
-    @Get()
-    getCourses(): string {
-        return 'Hello from courses';
-    }
 
     //TODO: make more rest these endpoints
     @Get('get/:id')
@@ -31,6 +34,11 @@ export class CoursesController {
     @Post('create')
     createCourses(@Body() course: CreateCourseDto): Promise<Course> {
         return this.coursesService.createCourses(course);
+    }
+
+    @Delete(':id')
+    deleteCourse(@Param('id') id: number) {
+        return this.coursesService.deleteCourse(id);
     }
 
     @Get('list/:id')

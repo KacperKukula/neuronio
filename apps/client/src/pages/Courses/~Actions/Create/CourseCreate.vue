@@ -1,6 +1,6 @@
 <template>
-    <div :class="'createCourse'" class="my-6 nav-top-padding">
-        <h1>Create Course</h1>
+    <div :class="'createCourse'">
+        <h1 class="mb-4">{{ $t('courses.createCourse_header') }}</h1>
         
         <Form v-slot="$form" :initialValues="{}" @submit="onFormSubmit" class="createCourse__form">
             <div class="flex flex-col gap-4 mb-4">
@@ -8,7 +8,7 @@
                 <InputText v-model="name" type="text" placeholder="Name" fluid />
 
                 <h4>Opis</h4>
-                <Editor v-model="description" editorStyle="height: 320px" />
+                <Editor v-model="description" editorStyle="height: 200px" />
                 <Message v-if="$form.username?.invalid" severity="error" size="small" variant="simple">{{ $form.username.error?.message }}</Message>
             </div>
 
@@ -61,12 +61,12 @@ const onFormSubmit = async () => {
 
 <style scoped lang="scss">
 .createCourse {
+
+    width: min(100%, 1100px);
+
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
 
-    &__form {
-        width: 80%;
-    }
 }
 </style>

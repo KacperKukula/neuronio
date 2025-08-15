@@ -11,6 +11,10 @@ class CourseService extends HttpService {
         return await this.authorizedReq(false).post('courses/create', { json: course }).json();
     }
 
+    async deleteCourse(courseId: number): Promise<void> {
+        await this.authorizedReq(true).delete(`courses/${courseId}`);
+    }
+
     async searchForUsers(searchPhrase: string): Promise<string> {
         return await this.authorizedReq(false).post('users/searchForUsers', { json: { search: searchPhrase } }).json();
     }

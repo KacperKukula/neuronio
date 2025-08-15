@@ -42,6 +42,10 @@ export class CoursesService {
         });
     }
 
+    async deleteCourse(id: number) {
+        
+    }
+
     async getCourseById(id: number): Promise<Course | null> {
         const course = await this.coursesRepository.findOne({
             where: { id },

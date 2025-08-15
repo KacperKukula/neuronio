@@ -50,7 +50,7 @@
                         <!--BLOCKS - SUPPORT-->
                         <div class="blockArea--support">
                             <Button icon="pi pi-pencil" rounded variant="outlined" severity="info" aria-label="User" @click="editAction()" />
-                            <Button icon="pi pi-trash" rounded variant="outlined" severity="danger" aria-label="User" @click="deleteBlockId = " />
+                            <Button icon="pi pi-trash" rounded variant="outlined" severity="danger" aria-label="User" @click="() => deleteBlockId = block.id" />
                         </div>
                         <BlockRenderer :block="block" />
                     </div>
@@ -69,7 +69,7 @@
             <!--ADDING BLOCK-->
             <teleport v-if="addModuleTarget" :to="addModuleTarget">
                 <div :class="'addingTile'" class="relative py-6">
-                    <Button icon="pi pi-times" severity="contrast" rounded variant="outlined"
+                    <Button icon="pi pi-times" severity="contrast" small rounded variant="outlined"
                         class="!absolute right-3 top-3" @click="clearAdding()" />
 
                     <template v-if="newModule">
@@ -84,14 +84,11 @@
         </div>
     </section>
 
-    <!--DIALOGS-->
-    <Dialog v-model:visible="!!deleteBlockId" modal :header="$t('courses.deleteBlockHeader')" :style="{ width: '25rem' }">
-        <p>{{ $t('courses.deleteBlockContent') }}</p>
-        <div class="flex gap-3 mt-6">
-            <Button :label="$t('common.delete')" icon="pi pi-trash" variant="outlined" severity="danger" iconPos="right" @click="deleteBlock()" />
-            <Button :label="$t('common.back')" icon="pi pi-undo" variant="outlined" severity="contrast" iconPos="right" @click="deleteBlockId = null" />
-        </div>
-    </Dialog>
+    <course-edit-dialogs 
+        :blockToDeleteId="deleteBlockId"
+        @block-delete-proceed="deleteAction(deleteBlockId as number)"
+        @block-delete-back="deleteBlockId = undefined" />
+
 </template>
 
 <script setup lang="ts">
@@ -103,6 +100,7 @@ import { Module } from '@/common/models/Module';
 import { ModuleType } from '@/common/enums/courses/ModuleTypes';
 import { Course } from '@/common/models/Course';
 
+import CourseEditDialogs from './CourseEditDialogs.vue';
 import EditModule from '../../~Blocks/EditModule.vue';
 import { blockService } from '@/services/blockService';
 import { UploadManager } from '@/modules/upload/uploadMngr';
@@ -110,7 +108,6 @@ import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
 import type { Block } from '@/common/models/Block';
 import BlockRenderer from '../../~Blocks/BlockRenderer.vue';
 import AddBlock from './components/AddBlock.vue';
-import Dialog from 'primevue/dialog';
 
 const router = useRouter()
 const route = useRoute()
@@ -129,7 +126,8 @@ const isAddingOnEnd = ref<null|boolean>(false)
 const newModule = ref<null|Module>(null);
 const courseBckg = ref<null|string>();
 
-const deleteBlockId = ref<null|number>(null)
+/* Id of willing to delete block */
+const deleteBlockId = ref<number>()
 
 const createNewModule = (type: ModuleType) => {
     if(!type) {
@@ -205,7 +203,13 @@ const clearAdding = () => {
 }
 
 const editAction = () => {
+    
+}
 
+const deleteAction = async (blockId: number) => {
+    await blockService.deleteBlock(blockId)
+    deleteBlockId.value = undefined;
+    reloadBlocks()
 }
 
 onMounted(async () => {

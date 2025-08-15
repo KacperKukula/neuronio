@@ -5,7 +5,7 @@
 
   <AlertArea />
 
-  <main :class="'page-view'" class="py-5 px-4 mx-auto">
+  <main :class="'page-view'" class="py-5 px-4 flex flex-col items-center">
     <router-view v-slot="{ Component }">
       <suspense timeout="0">
         <!-- Default -->
@@ -55,5 +55,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.page-view { margin-top: $navBarHeight; }
+.page-view {
+  margin-top: $navBarHeight;
+  min-height: calc(100svh - $navBarHeight - $footerHeight);
+}
 </style>

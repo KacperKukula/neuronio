@@ -3,10 +3,14 @@
     "blocks": {
         "definitions": "Definicje"
     },
+    "courses": {
+        "createCourse_header": "Stwórz kurs"
+    },
     "common": {
         "add": "Dodaj",
         "back": "Wróć",
-        "delete": "Usuń"
+        "delete": "Usuń",
+        "suggestion": "Sugestie"
     },
     "errors": {
         "noResponse": "Nasze serwery są tymczasowo niedostępne",

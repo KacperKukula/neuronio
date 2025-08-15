@@ -13,6 +13,10 @@ class BlockService extends HttpService {
     async updateBlockOrder(block: Block): Promise<void> {
         await this.authorizedReq(false).put(`blocks/${block.id}/order`, { json: { order: block.order } });
     }
+
+    async deleteBlock(blockId: number): Promise<void> {
+        await this.authorizedReq(false).delete(`blocks/${blockId}`)
+    }
 }
 
 export const blockService = new BlockService();

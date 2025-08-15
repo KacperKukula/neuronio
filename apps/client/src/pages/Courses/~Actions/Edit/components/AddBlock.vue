@@ -1,22 +1,35 @@
 <template>
-    <div :class="'addModule'" class="py-12 px-4">
+    <div :class="'addModule'" class="py-2 px-8">
 
-        <div class="flex justify-between px-12 pb-8">
+        <div class="flex justify-between pb-8">
             <h2 class="text-2xl font-semibold">Add a module</h2>
         </div>
 
-        <Carousel :value="blocksArray" :numVisible="6" :numScroll="6">
-            <template #item="slotProps">
-                <div :class="'modulesTile'" class="cursor-pointer" @click="addModuleAction(slotProps.data.type)">
-                    <div :class="'modulesTile__img'" class="w-full aspect-square">
-                        <img :src="slotProps.data.image" alt="module miniature"
-                            class="h-full w-full transition-transform duration-150 ease-in"/>
-                    </div>
-    
-                    <h4>{{ $t(slotProps.data.label) }}</h4>
-                </div>
-            </template>
-        </Carousel>
+        <div class="grid grid-cols-2 gap-6">
+            <!--COLUMN 1 - SEARCH AND SUGGESTED -->
+            <div>
+                <IconField class="mb-4">
+                    <InputIcon>
+                        <i class="pi pi-search" />
+                    </InputIcon>
+                    <InputText placeholder="Search" class="w-full" />
+                </IconField>
+
+                <!--SUGESTIONS-->
+                <h3>Sugestions:</h3>
+            </div>
+            <!--COLUMN 2 - BLOCKS TO ADD -->
+            <div>
+                <ul :class="'blockList'" class="rounded-sm">
+                    <!--BLOCKS SEARCH RESULT-->
+                    <template v-for="block in blocksArray">
+                        <li class="px-4 py-3" @click="addBlockAction(block.type)">
+                            {{ block.dict ? $t(block.dict) : block.label }}
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -33,7 +46,7 @@ const isActive = ref<boolean>(false)
 
 const activate = () => isActive.value = true
 
-const addModuleAction = (moduleType: ModuleType) => emit('add', moduleType)
+const addBlockAction = (moduleType: ModuleType) => emit('add', moduleType)
 </script>
 
 <style scoped lang="scss">
@@ -46,6 +59,21 @@ const addModuleAction = (moduleType: ModuleType) => emit('add', moduleType)
         &:hover {
             > img { transform: scale(1.4); }
         }
+    }
+}
+
+.blockList {
+    height: 12rem;
+    background-color: $darker;
+    border: 1px solid $primaryDark;
+
+    > li {
+        border-bottom: 1px solid $primaryGrey;
+    }
+
+    > li:hover {
+        cursor: pointer;
+        filter: brightness(0.8);
     }
 }
 </style>
