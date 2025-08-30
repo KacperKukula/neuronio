@@ -7,7 +7,7 @@
         <SimpleTile class="register__form">
             <h1>Register</h1>
 
-            <Form @submit="register" class="flex flex-col gap-4 w-full sm:w-56">
+            <Form @submit="register" class="flex flex-col gap-4 w-full">
                 <FormField name="username">
                     <label for="username" class="mb-3">Username</label>
                     <InputText v-model="username" name="username" type="text" placeholder="Username" fluid />
@@ -113,7 +113,7 @@ const register = async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100svh;
+    min-height: calc(100svh - $navBarHeight - $footerHeight);
 
     &--background {
         z-index: -1;
@@ -129,7 +129,7 @@ const register = async () => {
     }
 
     &__form {
-        width: min(100%, 20rem);
+        width: min(100%, 24rem);
         padding: 3rem 2rem;
         display: flex;
         flex-direction: column;

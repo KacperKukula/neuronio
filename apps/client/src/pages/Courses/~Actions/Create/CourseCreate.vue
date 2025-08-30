@@ -1,7 +1,8 @@
 <template>
-    <div :class="'createCourse'">
+    <Section :class="'createCourse'" :type="SectionTypes.CONSTRAINED">
+
         <h1 class="mb-4">{{ $t('courses.createCourse_header') }}</h1>
-        
+
         <Form v-slot="$form" :initialValues="{}" @submit="onFormSubmit" class="createCourse__form">
             <div class="flex flex-col gap-4 mb-4">
                 <h4>Nazwa</h4>
@@ -16,12 +17,12 @@
 
             <Button type="submit">Create course!</Button>
         </Form>
-    </div>
+
+    </Section>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useCreateCourseForm } from './useCreateCourseForm';
 import { useRouter } from 'vue-router';
 import Button from 'primevue/button';
 import Participants from './components/Participants.vue';
@@ -30,6 +31,8 @@ import { useUserStore } from '@/stores/userStore/UserStore';
 import { Utils } from '@/utils';
 import { courseService } from '@/services/courseService';
 import CommonPathsConst from '@/router/CommonPathsConst';
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
 
 const name = ref<string>('')
 const description = ref<string>('')
@@ -61,9 +64,6 @@ const onFormSubmit = async () => {
 
 <style scoped lang="scss">
 .createCourse {
-
-    width: min(100%, 1100px);
-
     display: flex;
     flex-direction: column;
     align-items: left;

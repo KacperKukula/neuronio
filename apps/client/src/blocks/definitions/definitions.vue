@@ -14,7 +14,7 @@
                     <DefCard :front="activeDef?.keyword" :back="activeDef?.definition" />
                 </div>
     
-                <div class="w-full grid grid-cols-2">
+                <div class="w-full grid grid-cols-2 overflow-hidden">
                     <button :class="['answerButton', 'answerButton--positive']" class="place-items-center py-4" @click="nextDefinition(true)">
                         {{ $t('modules.definitions.answerPositive') }}
                     </button>

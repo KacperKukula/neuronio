@@ -18,7 +18,13 @@
     },
     "menu": {
         "home": "Strona główna",
-        "about-us": "O nas"
+        "about-us": "O nas",
+        
+        "profile": {
+            "profile": "Profil",
+            "preferences": "Preferencje",
+            "logout": "Wyloguj"
+        }
     },
     "salesPages": {
         "home": {

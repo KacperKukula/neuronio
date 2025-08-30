@@ -1,20 +1,17 @@
 <template>
     <div class="profileAvatar">
-        <Avatar v-if="src" :src="src" shape="circle" />
+        <!-- <Avatar v-if="src" :src="src" shape="circle" /> -->
 
-        <template v-else>
-            <UserCircleIcon />
-        </template>
+        <UserCircleIcon class="cursor-pointer stroke-1" aria-haspopup="true" aria-controls="overlay_menu" />
     </div>
 </template>
 
 <script setup lang="ts">
-import Avatar from 'primevue/avatar'; 
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 
-defineProps({
-    src: String
-})
+const props = defineProps<{
+    userId?: number
+}>()
 </script>
 
 <style scoped lang="scss">

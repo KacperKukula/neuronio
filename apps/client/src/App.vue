@@ -5,7 +5,9 @@
 
   <AlertArea />
 
-  <main :class="'page-view'" class="py-5 px-4 flex flex-col items-center">
+  <!--class="py-5 px-4 flex flex-col items-center"-->
+
+  <main :class="'page-view'">
     <router-view v-slot="{ Component }">
       <suspense timeout="0">
         <!-- Default -->
@@ -33,11 +35,10 @@
 import { RouterView } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useUserStore } from './stores/userStore/UserStore';
+import LangSwitch from './components/LangSwitch/LangSwitch.vue';
 import RadarLoader from '@/components/Loaders/RadarLoader.vue';
 import NavBar from '@/layout/NavBar/NavBar.vue';
 import Footer from '@/layout/Footer.vue';
-import LangSwitch from './components/LangSwitch/LangSwitch.vue';
-import { Interactions } from './common/events/Interactions';
 
 const userStore = useUserStore()
 const isLoading = ref(true);

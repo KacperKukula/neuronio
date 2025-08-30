@@ -20,7 +20,13 @@
     },
     "menu": {
         "home": "Home",
-        "about-us": "About us"
+        "about-us": "About us",
+        
+        "profile": {
+            "profile": "Profile",
+            "preferences": "Preferences",
+            "logout": "Logout"
+        }
     },
     "salesPages": {
         "home": {

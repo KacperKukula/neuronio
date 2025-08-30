@@ -1,5 +1,5 @@
 <template>
-    <section class="nav-top-padding w-full flex justify-center">
+    <Section :type="SectionTypes.CONSTRAINED" class="w-full flex justify-center">
         <div v-if="!course">
             <p>Loading course...</p>
         </div>
@@ -19,7 +19,7 @@
 
             <!--OWNER-->
             <div :class="'courseEdit__owner'" class="flex items-center py-4 gap-2">
-                <ProfileAvatar src="" />
+                <ProfileAvatar />
 
                 <p>Owner: {{ course.owner?.name }}</p>
             </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </Section>
 </template>
 
 <script lang="ts" setup>
@@ -46,6 +46,9 @@ import type { Block } from '@/common/models/Block';
 import BlockRenderer from '../../~Blocks/BlockRenderer.vue';
 import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
 import { userService } from '@/services/userService';
+
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
 
 const route = useRoute()
 const courseId = route.params.id

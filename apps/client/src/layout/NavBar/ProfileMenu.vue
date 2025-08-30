@@ -7,7 +7,7 @@
 
         <template v-else>
             <span>{{ userStore.user?.email }}</span>
-            <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="flagMenuShow"></Menu>
+            <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="true"></Menu>
         </template>
 
         <div class="profile__userPhoto" @click="toggleFlagMenu()">
@@ -34,6 +34,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 
@@ -43,14 +44,15 @@ import { UploadManager } from '@/modules/upload/uploadMngr';
 import { useClickInterceptor, Interception } from '@/modules/interceptor/ClickInterceptor';
 import CommonPathsConst from '@/router/CommonPathsConst';
 
+const i18n = useI18n();
 const router = useRouter()
 const userStore = useUserStore()
 const clickInterc = useClickInterceptor()
 
 const menuItems: MenuItem[] = [
-    { label: 'Profile', icon: 'pi pi-user', command: () => { router.push('/profile') } },
-    { label: 'Settings', icon: 'pi pi-cog', command: () => { router.push('/preferences') } },
-    { label: 'Logout', icon: 'pi pi-sign-out', command: () => { 
+    { label: () => i18n.t('menu.profile.profile'), icon: 'pi pi-user', command: () => { router.push('/profile') } },
+    { label: () => i18n.t('menu.profile.preferences'), icon: 'pi pi-cog', command: () => { router.push('/preferences') } },
+    { label: () => i18n.t('menu.profile.logout'), icon: 'pi pi-sign-out', command: () => { 
             userStore.logout();
             router.push(CommonPathsConst.LOGIN)
         }
@@ -62,12 +64,9 @@ const toggleFlagMenu = () => {
     if(flagMenuShow) clickInterc.interceptOnce(new Interception(() => flagMenuShow.value = false))
 
     flagMenuShow.value = !flagMenuShow.value
-
 }
 
-const loginUser = async () => {
-    router.push('/login')
-};
+const loginUser = async () => router.push('/login');
 </script>
 
 <style lang="scss" scoped>

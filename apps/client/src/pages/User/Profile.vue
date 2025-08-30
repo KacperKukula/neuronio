@@ -1,5 +1,5 @@
 <template>
-    <section :class="'profile'" class="nav-top-padding">
+    <Section :type="SectionTypes.CONSTRAINED">
         <div :class="'profile__content'" class="pt-8">
 
             <div class="profile__photo">
@@ -51,7 +51,7 @@
                 </Form>
             </div>
         </div>
-    </section>
+    </Section>
 </template>
 
 <script setup lang="ts">
@@ -64,6 +64,9 @@ import { plainToClass, plainToInstance } from 'class-transformer';
 import { UserProfileForm } from './model/UserProfileForm';
 import { UpdateUserProfileDto } from 'shared';
 import { UploadManager } from '@/modules/upload/uploadMngr';
+
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
 
 const emit = defineEmits(['reload'])
 

@@ -1,31 +1,29 @@
 <template>
-    <section id="login" class="login">
+    <section id="login">
         <div class="login--background">
             <img src="/imgs/green-abstract.jpg"/>
         </div>
 
-        <SimpleTile>
-            <div class="login__form">
-                <h1>Login</h1>
+        <SimpleTile class="login__form">
+            <h1>Login</h1>
 
-                <Form v-slot="$form" :validateOnBlur="true" @submit="loginUser" class="flex flex-col gap-4 w-60">
-                    <FormField v-slot="$field" name="username">
-                        <InputText v-model="loginForm.name" name="username" type="text" placeholder="Username" fluid />
-                    </FormField>
+            <Form v-slot="$form" :validateOnBlur="true" @submit="loginUser" class="flex flex-col gap-4 w-60">
+                <FormField v-slot="$field" name="username">
+                    <InputText v-model="loginForm.name" name="username" type="text" placeholder="Username" fluid />
+                </FormField>
 
-                    <FormField v-slot="$field" name="password">
-                        <Password v-model="loginForm.password" :feedback="false" placeholder="Password" class="w-full" inputClass="w-full"/>
-                    </FormField>
+                <FormField v-slot="$field" name="password">
+                    <Password v-model="loginForm.password" :feedback="false" placeholder="Password" class="w-full" inputClass="w-full"/>
+                </FormField>
 
-                    <Button type="submit" :loading="inProgress" severity="secondary" label="Submit" />
-                </Form>
+                <Button type="submit" :loading="inProgress" severity="secondary" label="Submit" />
+            </Form>
 
-                <div class="flex flex-col gap-2 w-full">
-                    <Message v-if="serverErr?.message" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
-                </div>
-
-                <router-link to="/register">Register now</router-link>
+            <div class="flex flex-col gap-2 w-full">
+                <Message v-if="serverErr?.message" severity="error" size="small" variant="simple">{{ serverErr.message }}</Message>
             </div>
+
+            <router-link to="/register">Register now</router-link>
         </SimpleTile>
     </section>
 </template>
@@ -103,11 +101,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-section.login {
+section#login {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100svh - $footerHeight);
+    min-height: calc(100svh - $navBarHeight - $footerHeight);
 }
 
 .login {
