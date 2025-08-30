@@ -39,6 +39,8 @@ const showBack = ref<boolean>(false)
     transition: all .25s ease-out;
     cursor: pointer;
 
+    // background-color: $moduleActivityElement;
+
     &__back,
     &__front {
         height: 20rem;
@@ -54,12 +56,13 @@ const showBack = ref<boolean>(false)
     
     &__front {
         border: 3px solid $moduleQuestion;
+        transform: translateZ(-20px);
     }
 
     &__back {
         bottom: 100%;
-        transform: rotateY(180deg);
         border: 3px solid $moduleAnswer;
+        transform: rotateY(180deg);
     }
 
     &.showBack {

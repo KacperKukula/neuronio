@@ -38,21 +38,28 @@
                     v-for="(block, inx) in courseBlocks" :key="inx"
                     :class="'blockView'" class="min-h-20" >
                     
+                    <!--TELEPORT SPACE-->
                     <div :class="`teleport-space-${block.order}`"></div>
+                    
                     <div v-if="activeOrder !== block.order" class="addBar">
                         <div class="addBar__icon" @click="addOnOrder(block.order)">
                             <i class="pi pi-plus" style="color: white; font-size: .75rem"></i>
                         </div>
                     </div>
-                    <div class="blockArea">
+
+                    <div v-if="editBlockId !== block.id" class="blockArea">
                         <div :class="'blockArea--mark'" class="h-full"></div>
 
                         <!--BLOCKS - SUPPORT-->
                         <div class="blockArea--support">
-                            <Button icon="pi pi-pencil" rounded variant="outlined" severity="info" aria-label="User" @click="editAction()" />
+                            <Button icon="pi pi-pencil" rounded variant="outlined" severity="info" aria-label="User" @click="editAction(block)" />
                             <Button icon="pi pi-trash" rounded variant="outlined" severity="danger" aria-label="User" @click="() => deleteBlockId = block.id" />
                         </div>
                         <BlockRenderer :block="block" />
+                    </div>
+
+                    <div v-else>
+                        <EditModule :module="block" @submit="editBlockId = 0" />
                     </div>
                 </div>
             </div>
@@ -115,7 +122,8 @@ const courseId = route.params.id
 
 /* COURSE DATA */
 const course = ref<null|Course>()
-/* BLOCK COURSE DATA */
+
+/* Block course main data */
 const courseBlocks = ref<null|Block[]>()
 
 const addModuleTarget = ref<null|string>()
@@ -128,6 +136,9 @@ const courseBckg = ref<null|string>();
 
 /* Id of willing to delete block */
 const deleteBlockId = ref<number>()
+
+/* Id of willing to edit block - 0 for editing nothing */
+const editBlockId = ref<number>(0)
 
 const createNewModule = (type: ModuleType) => {
     if(!type) {
@@ -202,8 +213,8 @@ const clearAdding = () => {
     newModule.value = null;
 }
 
-const editAction = () => {
-    
+const editAction = (blockToEdit: Block) => {
+    editBlockId.value = blockToEdit.id;
 }
 
 const deleteAction = async (blockId: number) => {

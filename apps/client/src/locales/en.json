@@ -36,8 +36,10 @@
     },
     "modules": {
         "definitions": {
-            "answerPositive": "Umiem!",
-            "answerNegative": "Nie umiem..."
+            "answerPositive": "Got it!",
+            "answerNegative": "Don't know...",
+            "noContent": "Definitions are not added",
+            "ended": "You run has been ended!"
         }
     }
 }

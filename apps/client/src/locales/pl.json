@@ -34,8 +34,10 @@
     },
     "modules": {
         "definitions": {
-            "answerPositive": "Got it!",
-            "answerNegative": "Don't know..."
+            "answerPositive": "Umiem!",
+            "answerNegative": "Nie umiem...",
+            "noContent": "Nie mam dodanych definicji",
+            "ended": "Twój bieg został zakończony!"
         }
     }
 }

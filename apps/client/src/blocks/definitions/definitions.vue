@@ -2,14 +2,21 @@
     <div :class="'formated-text'" class="flex flex-col">
         <p v-html="Utils.sanitize(data.text)"></p>
         
-        <div v-if="!active" :class="'defs-tile defs-tile--nonactive'" class="w-full flex justify-center p-8 bg-stone-700">
+        <div v-if="moduleState === DefinitionModuleState.NOT_ACTIVE"
+            :class="'defs-tile defs-tile--nonactive'" class="w-full flex justify-center p-8 bg-stone-700">
+
             <Button label="Activate definitions" @click="activateModule" />
         </div>
         
         <div v-else :class="'defs-tile defs-tile--active'" class="bg-stone-700">
 
+            <!--NO CONTENT-->
+            <template v-if="moduleState === DefinitionModuleState.NO_CONTENT">
+                <NoContent />
+            </template>
+
             <!--ACTIVE RUN-->
-            <template v-if="!runEnded">
+            <template v-if="moduleState === DefinitionModuleState.ACTIVE">
                 <div class="flex justify-center py-8">
                     <DefCard :front="activeDef?.keyword" :back="activeDef?.definition" />
                 </div>
@@ -25,7 +32,7 @@
             </template>
 
             <!--RUN ENDED, STATS-->
-            <template v-else>
+            <template v-else-if="moduleState === DefinitionModuleState.ENDED">
                 <h2>KONIEC</h2>
             </template>
         </div>
@@ -41,9 +48,12 @@ import { knowledgeService } from '@/services/knowledgeService';
 
 import DefCard from './components/DefCard.vue';
 import Stats from './data/Stats';
+import { DefinitionModuleState } from './enums/DefinitionModuleState';
+import NoContent from './components/NoContent.vue';
 
-const active = ref<boolean>(false)
 const randomizedDefs = ref<Definition[]>()
+
+const moduleState = ref(DefinitionModuleState.NOT_ACTIVE);
 
 // Definitions active
 const activeDef = ref<Definition>()
@@ -58,10 +68,15 @@ const props = defineProps<{
 }>();
 
 const activateModule = async () => {
-    active.value = false
+    moduleState.value = DefinitionModuleState.STAND_BY
 
     const rawDefs = await knowledgeService.getDefinitions(props.data.definitions)
     
+    if(!rawDefs.length) {
+        moduleState.value = DefinitionModuleState.NO_CONTENT;
+        return;
+    }
+
     randomizedDefs.value = randomizePosition(rawDefs);
     activeDef.value = randomizedDefs.value[0];
 
@@ -69,7 +84,7 @@ const activateModule = async () => {
     run.value = new Stats();    
     run.value.endAt = randomizedDefs.value.length;
 
-    active.value = true;
+    moduleState.value = DefinitionModuleState.ACTIVE;
 }
 
 const nextDefinition = (scored: boolean) => {
