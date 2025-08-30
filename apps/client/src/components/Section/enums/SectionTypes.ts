@@ -1,4 +1,7 @@
 export enum SectionTypes {
     FULL_WIDTH = 'full-width',
-    CONSTRAINED = 'constrained'
+
+    // Constrained
+    CONSTRAINED = 'constrained',
+    FAT_CONSTRAINED = 'fat-constrained'
 }

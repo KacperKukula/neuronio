@@ -12,7 +12,8 @@
         "add": "Add",
         "back": "Back",
         "delete": "Delete",
-        "suggestion": "Suggestions"
+        "suggestion": "Suggestions",
+        "tryagain": "Try again"
     },
     "errors": {
         "noResponse": "Our servers are temporary unavailable",

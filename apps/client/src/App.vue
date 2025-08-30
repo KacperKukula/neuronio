@@ -1,34 +1,33 @@
 <template>
-  <NavBar class="z-20" />
+	<NavBar class="z-20" />
 
-  <!-- <Dialog class="z-30" /> -->
+	<!-- <Dialog class="z-30" /> -->
 
-  <AlertArea />
+	<AlertArea />
 
-  <!--class="py-5 px-4 flex flex-col items-center"-->
+	<!--class="py-5 px-4 flex flex-col items-center"-->
 
-  <main :class="'page-view'">
-    <router-view v-slot="{ Component }">
-      <suspense timeout="0">
-        <!-- Default -->
-        <template #default>
-          <component :is="Component" :key="viewKey" @reload="reload" />
-        </template>
+	<main :class="'page-view'">
+		<router-view v-slot="{ Component }">
+			<suspense timeout="0">
+				<!-- Default -->
+				<template #default>
+					<component :is="Component" :key="viewKey" @reload="reload" />
+				</template>
 
-        <!-- Loading -->
-        <template #fallback>
-          <div class="w-full flex justify-center items-center pt-18">
-            <RadarLoader />
-          </div>
-        </template>
-      </suspense>
-    </router-view>
+				<!-- Loading -->
+				<template #fallback>
+					<div class="w-full flex justify-center items-center pt-18">
+						<RadarLoader />
+					</div>
+				</template>
+			</suspense>
+		</router-view>
+	</main>
 
-  </main>
-  
-  <LangSwitch v-if="!userStore.isLoggedIn" class="fixed b-0 l-0 z-5" />
-  
-  <Footer />
+	<LangSwitch v-if="!userStore.isLoggedIn" class="fixed b-0 l-0 z-5" />
+
+	<Footer />
 </template>
 
 <script setup lang="ts">
@@ -48,16 +47,20 @@ const viewKey = ref(0);
 const reload = () => viewKey.value++
 
 onMounted(async () => {
-  userStore.loadUser()
-  
-  isLoading.value = false;
+	userStore.loadUser()
+
+	isLoading.value = false;
 
 });
 </script>
 
 <style lang="scss" scoped>
 .page-view {
-  margin-top: $navBarHeight;
-  min-height: calc(100svh - $navBarHeight - $footerHeight);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	margin-top: $navBarHeight;
+	min-height: calc(100svh - $navBarHeight - $footerHeight);
 }
 </style>

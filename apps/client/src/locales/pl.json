@@ -10,7 +10,8 @@
         "add": "Dodaj",
         "back": "Wróć",
         "delete": "Usuń",
-        "suggestion": "Sugestie"
+        "suggestion": "Sugestie",
+        "tryagain": "Spróbuj ponownie"
     },
     "errors": {
         "noResponse": "Nasze serwery są tymczasowo niedostępne",

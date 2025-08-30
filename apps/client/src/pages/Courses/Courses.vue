@@ -1,5 +1,5 @@
 <template>
-    <section :class="'courses'" class="nav-top-padding">
+    <Section :type="SectionTypes.CONSTRAINED" :class="'courses'">
         <NoCourses v-if="!courses" />
         
         <template v-else>
@@ -27,7 +27,7 @@
                 </template>
             </DataView>
         </template>
-    </section>
+    </Section>
 </template>
 
 <script setup lang="ts">
@@ -38,6 +38,8 @@ import CourseSupport from './components/CourseSupport.vue';
 import NoCourses from './components/NoCourses.vue';
 import { onMounted, ref } from 'vue';
 import type { Course } from '@/common/models/Course';
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
 
 const DEFAULT_IMG_SOURCE = '/imgs/no-image.png';
 

@@ -1,5 +1,5 @@
  <template>
-    <section class="nav-top-padding w-full flex justify-center">
+    <Section :type="SectionTypes.FAT_CONSTRAINED" class="w-full flex justify-center">
         <div v-if="!course">
             <p>Loading course...</p>
         </div>
@@ -89,7 +89,7 @@
                 </div>
             </teleport>
         </div>
-    </section>
+    </Section>
 
     <course-edit-dialogs 
         :blockToDeleteId="deleteBlockId"
@@ -115,6 +115,8 @@ import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar.vue';
 import type { Block } from '@/common/models/Block';
 import BlockRenderer from '../../~Blocks/BlockRenderer.vue';
 import AddBlock from './components/AddBlock.vue';
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
 
 const router = useRouter()
 const route = useRoute()

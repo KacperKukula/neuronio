@@ -33,7 +33,7 @@
 
             <!--RUN ENDED, STATS-->
             <template v-else-if="moduleState === DefinitionModuleState.ENDED">
-                <h2>KONIEC</h2>
+                <EndedRun :runData="run" @reset="resetRun()" />
             </template>
         </div>
     </div>
@@ -41,24 +41,26 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Data from './data/definitions.data'
 import { Utils } from '@/utils';
 import { Definition } from '@/common/models/Definition';
 import { knowledgeService } from '@/services/knowledgeService';
 
+import Data from './data/definitions.data'
 import DefCard from './components/DefCard.vue';
-import Stats from './data/Stats';
+import RunData from './data/definition.run';
 import { DefinitionModuleState } from './enums/DefinitionModuleState';
 import NoContent from './components/NoContent.vue';
+import EndedRun from './components/EndedRun.vue';
 
 const randomizedDefs = ref<Definition[]>()
 
 const moduleState = ref(DefinitionModuleState.NOT_ACTIVE);
 
-// Definitions active
+/* Currently active definition for user */
 const activeDef = ref<Definition>()
-const runEnded = ref<boolean>(false)
-const run = ref<Stats>()
+
+/* All data of the run */
+const run = ref<RunData>()
 
 /* Show reverse of the card */
 const show = ref<boolean>(false)
@@ -77,12 +79,10 @@ const activateModule = async () => {
         return;
     }
 
+    // Set up new run
+    run.value = new RunData(rawDefs.length);    
     randomizedDefs.value = randomizePosition(rawDefs);
     activeDef.value = randomizedDefs.value[0];
-
-    // Set up new run
-    run.value = new Stats();    
-    run.value.endAt = randomizedDefs.value.length;
 
     moduleState.value = DefinitionModuleState.ACTIVE;
 }
@@ -90,11 +90,19 @@ const activateModule = async () => {
 const nextDefinition = (scored: boolean) => {
     if ( !run.value ) return console.error('💀 Run is null')
 
-    if( scored ) run.value.score++
+    // If scored add +1 to score
+    if( scored ) run.value.score++;
 
-    if( run.value.isEnd() ) return (runEnded.value = true)
+    // If 0 - the end of run
+    const counter = run.value.nextStep();
 
-    activeDef.value = randomizedDefs.value?.[++run.value.counter]   
+    console.log(counter)
+
+    if( !counter ) return ( moduleState.value = DefinitionModuleState.ENDED )
+
+    activeDef.value = randomizedDefs.value?.[counter]
+
+    console.log(run.value)
 }
 
 const randomizePosition = (defArr: Definition[]) => {
@@ -104,6 +112,20 @@ const randomizePosition = (defArr: Definition[]) => {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
+}
+
+const resetRun = async () => {
+    const rawDefs = await knowledgeService.getDefinitions(props.data.definitions)
+
+    randomizedDefs.value = randomizePosition(rawDefs);
+    activeDef.value = randomizedDefs.value[0];
+
+    // Set up new run
+    run.value = new RunData(rawDefs.length);    
+    randomizedDefs.value = randomizePosition(rawDefs);
+    activeDef.value = randomizedDefs.value[0];
+
+    moduleState.value = DefinitionModuleState.ACTIVE;
 }
 </script>
 
