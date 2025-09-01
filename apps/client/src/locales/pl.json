@@ -27,6 +27,17 @@
             "logout": "Wyloguj"
         }
     },
+    "user": {
+        "preferences": {
+            "changeLang": "Zmień język",
+            "selectBackground": "Wybierz tło"
+        },
+        "logout": {
+            "header": "Czy na pewno chcesz zostać wylogowany?",
+            "logout": "Wyloguj",
+            "back": "Wróć"
+        }
+    },
     "salesPages": {
         "home": {
             "hero_header": "Aby uczyć się szybciej i skuteczniej, najpierw trzeba zrozumieć, jak działa sam proces uczenia się",

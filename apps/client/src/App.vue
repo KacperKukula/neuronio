@@ -5,9 +5,10 @@
 
 	<AlertArea />
 
-	<!--class="py-5 px-4 flex flex-col items-center"-->
+	<bckg-renderer class="fixed inset-0 -z-10"/>
 
-	<main :class="'page-view'">
+	<main :class="'page-view'" class="relative z-10">
+
 		<router-view v-slot="{ Component }">
 			<suspense timeout="0">
 				<!-- Default -->
@@ -27,7 +28,7 @@
 
 	<LangSwitch v-if="!userStore.isLoggedIn" class="fixed b-0 l-0 z-5" />
 
-	<Footer />
+	<Footer class="relative z-10" />
 </template>
 
 <script setup lang="ts">
@@ -38,6 +39,7 @@ import LangSwitch from './components/LangSwitch/LangSwitch.vue';
 import RadarLoader from '@/components/Loaders/RadarLoader.vue';
 import NavBar from '@/layout/NavBar/NavBar.vue';
 import Footer from '@/layout/Footer.vue';
+import BckgRenderer from './components/Backgrounds/BckgRenderer.vue';
 
 const userStore = useUserStore()
 const isLoading = ref(true);

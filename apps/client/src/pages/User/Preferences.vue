@@ -1,12 +1,18 @@
 <template>
-    <section class="nav-top-padding px-3">
-        <h1 class="mb-4 pt-6">{{ $t('hello') }}</h1>
+    <Section id="preferences" :type="SectionTypes.CONSTRAINED">
+        <h2 class="mb-4 pt-6">{{ $t('user.preferences.changeLang') }}</h2>
     
         <div class="flex gap-3">
             <Select v-model="selectedLang" :options="appLocales" optionLabel="label" placeholder="Select lang" checkmark :highlightOnSelect="false" class="w-full md:w-56" />
             <Button type="submit" @click="submit">Wyślij</Button>
         </div>
-    </section>
+
+        <h2 class="mb-4 pt-6">{{ $t('user.preferences.selectBackground') }}</h2>
+
+        <div class="flex gap-3">
+            <BackgroundTile v-for="background in renderedBckgMap" :bckg="background" />
+        </div>
+    </Section>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +21,10 @@ import { userService } from '@/services/userService';
 import { UpdateUserPreferencesDto } from 'shared';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
+import Section from '@/components/Section/Section.vue';
+import { SectionTypes } from '@/components/Section/enums/SectionTypes';
+import BackgroundTile from '@/components/Backgrounds/BackgroundTile.vue';
+import { renderedBckgMap } from '@/common/RenderedBckgMap';
 
 const { locale } = useI18n();
 

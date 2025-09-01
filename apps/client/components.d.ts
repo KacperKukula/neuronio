@@ -9,7 +9,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AlertArea: typeof import('./src/components/Alerts/AlertArea.vue')['default']
+    BackgroundTile: typeof import('./src/components/Backgrounds/BackgroundTile.vue')['default']
     Badge: typeof import('primevue/badge')['default']
+    BckgRenderer: typeof import('./src/components/Backgrounds/BckgRenderer.vue')['default']
     BlobCross: typeof import('./src/components/Loaders/BlobCross.vue')['default']
     Button: typeof import('primevue/button')['default']
     Column: typeof import('primevue/column')['default']
@@ -22,6 +24,7 @@ declare module 'vue' {
     FloatLabel: typeof import('primevue/floatlabel')['default']
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
+    GradientBckg: typeof import('./src/components/Backgrounds/variants/GradientBckg.vue')['default']
     IconField: typeof import('primevue/iconfield')['default']
     InputIcon: typeof import('primevue/inputicon')['default']
     InputText: typeof import('primevue/inputtext')['default']
@@ -30,6 +33,7 @@ declare module 'vue' {
     Menu: typeof import('primevue/menu')['default']
     Menubar: typeof import('primevue/menubar')['default']
     Message: typeof import('primevue/message')['default']
+    NetBckg: typeof import('./src/components/Backgrounds/variants/NetBckg.vue')['default']
     Password: typeof import('primevue/password')['default']
     ProfileAvatar: typeof import('./src/components/ProfileAvatar/ProfileAvatar.vue')['default']
     RadarLoader: typeof import('./src/components/Loaders/RadarLoader.vue')['default']
@@ -41,6 +45,7 @@ declare module 'vue' {
     SimpleInput: typeof import('./src/components/Simple/Input/SimpleInput.vue')['default']
     SimpleTile: typeof import('./src/components/SimpleTile/SimpleTile.vue')['default']
     SkeletonPhoto: typeof import('./src/components/SkeletonLoaded/SkeletonPhoto.vue')['default']
+    WavesBckg: typeof import('./src/components/Backgrounds/variants/WavesBckg.vue')['default']
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']

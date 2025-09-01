@@ -5,6 +5,7 @@
             <router-link to="/login" class="profile__login" @click="loginUser">Login</router-link>
         </template>
 
+        <!--MENU FOR LOGGED USER-->
         <template v-else>
             <span>{{ userStore.user?.email }}</span>
             <Menu class="profile__menu" ref="menu" :model="menuItems" :data-show="true"></Menu>
@@ -30,6 +31,17 @@
             </skeleton-photo> -->
         </div>
     </div>
+
+    <Dialog v-model:visible="logoutDialog" modal :draggable="false">
+        <template #header>
+            <h4>{{ $t('user.logout.header') }}</h4>
+        </template>
+                
+        <div class="flex gap-3">
+            <Button severity="danger" @click="logoutUser()">{{ $t('user.logout.logout') }}</Button>
+            <Button severity="secondary" @click="() => logoutDialog = false">{{ $t('user.logout.back') }}</Button>
+        </div>
+    </Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -49,16 +61,15 @@ const router = useRouter()
 const userStore = useUserStore()
 const clickInterc = useClickInterceptor()
 
+const flagMenuShow = ref(false);
+const logoutDialog = ref<boolean>(false);
+
 const menuItems: MenuItem[] = [
     { label: () => i18n.t('menu.profile.profile'), icon: 'pi pi-user', command: () => { router.push('/profile') } },
     { label: () => i18n.t('menu.profile.preferences'), icon: 'pi pi-cog', command: () => { router.push('/preferences') } },
-    { label: () => i18n.t('menu.profile.logout'), icon: 'pi pi-sign-out', command: () => { 
-            userStore.logout();
-            router.push(CommonPathsConst.LOGIN)
-        }
+    { label: () => i18n.t('menu.profile.logout'), icon: 'pi pi-sign-out', command: () => logoutDialog.value = true 
     },
-]
-const flagMenuShow = ref(false);
+];
 
 const toggleFlagMenu = () => {
     if(flagMenuShow) clickInterc.interceptOnce(new Interception(() => flagMenuShow.value = false))
@@ -67,6 +78,12 @@ const toggleFlagMenu = () => {
 }
 
 const loginUser = async () => router.push('/login');
+
+const logoutUser = () => {
+    userStore.logout();
+    router.push(CommonPathsConst.LOGIN)
+    logoutDialog.value = false
+}
 </script>
 
 <style lang="scss" scoped>

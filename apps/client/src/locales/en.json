@@ -29,6 +29,17 @@
             "logout": "Logout"
         }
     },
+    "user": {
+        "preferences": {
+            "changeLang": "Change language",
+            "selectBackground": "Select background"
+        },
+        "logout": {
+            "header": "Are you sure you want to log out?",
+            "logout": "Log out",
+            "back": "Back"
+        }
+    },
     "salesPages": {
         "home": {
             "hero_header": "To learn faster and more effectively, it is necessary to understand how the learning process works itself",
