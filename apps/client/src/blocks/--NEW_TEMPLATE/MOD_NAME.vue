@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="flex flex-col">
         <h2>{{ data.EXAMPLE }}</h2>
     </div>
@@ -13,4 +13,6 @@ defineProps<{
 </script>
 
 <style lang="scss" scoped>
-</style>
+</style> -->
+
+<template></template>

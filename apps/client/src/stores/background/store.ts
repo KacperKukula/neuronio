@@ -2,13 +2,28 @@ import { ref, type Component } from 'vue'
 import { defineStore } from 'pinia'
 
 import GradientBckg from '@/components/Backgrounds/variants/GradientBckg.vue';
-import NetBckg from '@/components/Backgrounds/variants/NetBckg.vue';
+import type { Background } from '@/common/models/Background';
 
-const BACKGROUNDSTORE_NAME = 'courseStore';
-const DEFAULT_COMPONENT = NetBckg;
+const BACKGROUNDSTORE_NAME = 'backgroundStore';
+const DEFAULT_COMPONENT = GradientBckg;
 
 export const useBackgroundStore = defineStore(BACKGROUNDSTORE_NAME, () => {
-  const backgroundComp = ref<Component>(DEFAULT_COMPONENT)
+    const currentBckgComp = ref<Component>(DEFAULT_COMPONENT)
+    const currentBckgName = ref<string>('default')
 
-  return { backgroundComp }
+    function changeBackground(newBckg: Background) {
+        currentBckgComp.value = newBckg.component;
+        currentBckgName.value = newBckg.name;
+    }
+
+    function changePreferedBackground() {
+
+    }
+
+    return {
+        currentBckgComp,
+        currentBckgName,
+        changeBackground,
+        changePreferedBackground
+    }
 })

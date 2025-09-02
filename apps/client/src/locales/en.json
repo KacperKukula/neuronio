@@ -12,6 +12,8 @@
         "add": "Add",
         "back": "Back",
         "delete": "Delete",
+        "signin": "Sign in",
+        "signup": "Sign up",
         "suggestion": "Suggestions",
         "tryagain": "Try again"
     },
@@ -43,7 +45,8 @@
     "salesPages": {
         "home": {
             "hero_header": "To learn faster and more effectively, it is necessary to understand how the learning process works itself",
-            "hero_text": "To learn faster and more effectively, it is necessary to understand how the learning process works itself"
+            "hero_text": "To learn faster and more effectively, it is necessary to understand how the learning process works itself",
+            "hero_customize": "Customize your learning process however you like"
         }
     },
     "modules": {

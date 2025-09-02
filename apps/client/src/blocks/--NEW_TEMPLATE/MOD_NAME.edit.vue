@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
         <FloatLabel variant="on" class="w-full">
             <label for="on_label">Opis:</label>
@@ -13,4 +13,6 @@ import Data from './data/MOD_NAME.data'
 defineProps<{
     data: Data;
 }>()
-</script>
+</script> -->
+
+<template></template>

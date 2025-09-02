@@ -35,8 +35,44 @@ export function useFollowings() {
             container.removeEventListener("mousemove", handleMouseMove);
         };
     }
+    
+    function initCursorShadowLight(container: HTMLElement, light: HTMLElement, shadow: HTMLElement) {
+        if (!container || !light || !shadow) {
+            console.error("You need to provide a container and light element");
+            return;
+        }
+
+        light.style.position = "absolute";
+
+        const handleMouseEnter = () => {
+            shadow.style.opacity = "0";
+        };
+
+        const handleMouseLeave = () => {
+            shadow.style.opacity = "1";
+        };
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left - light.offsetWidth / 2;
+            const y = e.clientY - rect.top - light.offsetHeight / 2;
+            light.style.left = `${x}px`;
+            light.style.top = `${y}px`;
+        };
+
+        container.addEventListener("mouseenter", handleMouseEnter);
+        container.addEventListener("mouseleave", handleMouseLeave);
+        container.addEventListener("mousemove", handleMouseMove);
+
+        return () => {
+            container.removeEventListener("mouseenter", handleMouseEnter);
+            container.removeEventListener("mouseleave", handleMouseLeave);
+            container.removeEventListener("mousemove", handleMouseMove);
+        };
+    }
 
     return {
-        initCursorlight
+        initCursorlight,
+        initCursorShadowLight
     };
 }

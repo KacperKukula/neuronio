@@ -10,6 +10,8 @@
         "add": "Dodaj",
         "back": "Wróć",
         "delete": "Usuń",
+        "signin": "Zaloguj się",
+        "signup": "Zarejstruj się",
         "suggestion": "Sugestie",
         "tryagain": "Spróbuj ponownie"
     },
@@ -41,7 +43,8 @@
     "salesPages": {
         "home": {
             "hero_header": "Aby uczyć się szybciej i skuteczniej, najpierw trzeba zrozumieć, jak działa sam proces uczenia się",
-            "hero_text": "First e-learning platform to focus on the needs of the younger generation"
+            "hero_text": "First e-learning platform to focus on the needs of the younger generation",
+            "hero_customize": "Dostosuj twój proces nauki jakkolwiek chcesz"
         }
     },
     "modules": {

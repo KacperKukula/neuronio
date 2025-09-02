@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "turbo run dev",
-    "start:debug": "turbo run start:debug --filter=server"
+    "start:debug": "turbo run start:debug --filter=server",
+    
+    "build": "turbo run build --filter=client --filter=server"
   },
   "workspaces": [
     "apps/*",
